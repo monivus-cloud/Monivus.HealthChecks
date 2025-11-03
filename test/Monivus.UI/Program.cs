@@ -23,7 +23,7 @@ builder.AddRedisDistributedCache(connectionName: "cache",
     });
 
 builder.Services.AddHealthChecks()
-    .AddResourceUtilizationEntry()
+    .AddSystemEntry()
     .AddRedisEntry()
     .AddUrlEntry("https://www.google.com/");
 

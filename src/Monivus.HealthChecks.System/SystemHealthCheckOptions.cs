@@ -1,6 +1,6 @@
 namespace Monivus.HealthChecks
 {
-    public class ResourceUtilizationHealthCheckOptions
+    public class SystemHealthCheckOptions
     {
         public double MemoryUsageDegradedThresholdPercent { get; set; } = 0;
     }

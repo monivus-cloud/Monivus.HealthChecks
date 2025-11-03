@@ -3,35 +3,35 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Monivus.HealthChecks
 {
-    public static class ResourceUtilizationHealthCheckExtensions
+    public static class SystemHealthCheckExtensions
     {
-        public static IHealthChecksBuilder AddResourceUtilizationEntry(
+        public static IHealthChecksBuilder AddSystemEntry(
             this IHealthChecksBuilder builder,
-            Action<ResourceUtilizationHealthCheckOptions>? configure = null,
-            string name = "resource_utilization",
+            Action<SystemHealthCheckOptions>? configure = null,
+            string name = "System",
             HealthStatus? failureStatus = null,
             IEnumerable<string>? tags = null,
             TimeSpan? timeout = null)
         {
             ArgumentNullException.ThrowIfNull(builder);
 
-            return builder.AddResourceUtilizationEntry(
+            return builder.AddSystemEntry(
                 _ =>
                 {
-                    var options = new ResourceUtilizationHealthCheckOptions();
+                    var options = new SystemHealthCheckOptions();
                     configure?.Invoke(options);
                     return options;
                 },
                 name,
                 failureStatus,
-                PrependTypeTag("ResourceUtilization", tags),
+                PrependTypeTag("System", tags),
                 timeout);
         }
 
-        public static IHealthChecksBuilder AddResourceUtilizationEntry(
+        public static IHealthChecksBuilder AddSystemEntry(
             this IHealthChecksBuilder builder,
-            Func<IServiceProvider, ResourceUtilizationHealthCheckOptions> optionsFactory,
-            string name = "resource_utilization",
+            Func<IServiceProvider, SystemHealthCheckOptions> optionsFactory,
+            string name = "System",
             HealthStatus? failureStatus = null,
             IEnumerable<string>? tags = null,
             TimeSpan? timeout = null)
@@ -41,9 +41,9 @@ namespace Monivus.HealthChecks
 
             return builder.Add(new HealthCheckRegistration(
                 name,
-                sp => new ResourceUtilizationHealthCheck(optionsFactory(sp)),
+                sp => new SystemHealthCheck(optionsFactory(sp)),
                 failureStatus,
-                PrependTypeTag("ResourceUtilization", tags),
+                PrependTypeTag("System", tags),
                 timeout));
         }
 

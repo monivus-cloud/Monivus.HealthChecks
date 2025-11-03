@@ -3,11 +3,11 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Monivus.HealthChecks
 {
-    public sealed class ResourceUtilizationHealthCheck : IHealthCheck
+    public sealed class SystemHealthCheck : IHealthCheck
     {
-        private readonly ResourceUtilizationHealthCheckOptions _options;
+        private readonly SystemHealthCheckOptions _options;
 
-        public ResourceUtilizationHealthCheck(ResourceUtilizationHealthCheckOptions options)
+        public SystemHealthCheck(SystemHealthCheckOptions options)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
@@ -69,7 +69,7 @@ namespace Monivus.HealthChecks
             }
 
             var status = HealthStatus.Healthy;
-            var description = "Resource utilization within defined thresholds.";
+            var description = "System utilization within defined thresholds.";
 
             if (_options.MemoryUsageDegradedThresholdPercent != 0 && memoryUsagePercent >= _options.MemoryUsageDegradedThresholdPercent)
             {

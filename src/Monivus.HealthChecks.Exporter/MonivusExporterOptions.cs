@@ -2,15 +2,15 @@ namespace Monivus.HealthChecks.Exporter
 {
     public class MonivusExporterOptions
     {
-        public const string SectionName = "MonivusExporter";
+        public const string SectionName = "Monivus:Exporter";
 
         public bool Enabled { get; set; } = true;
 
         public string TargetApplicationUrl { get; set; } = string.Empty;
 
-        public string HealthCheckEndpoint { get; set; } = "/health";
+        public string HealthCheckPath { get; set; } = "/health";
 
-        public string CentralAppEndpoint { get; set; } = string.Empty;
+        public string MonivusCloudUrl { get; set; } = string.Empty;
 
         public string? ApiKey { get; set; }
 
@@ -32,30 +32,18 @@ namespace Monivus.HealthChecks.Exporter
             }
         }
 
-        public int? CheckIntervalSeconds
-        {
-            get => CheckInterval == TimeSpan.Zero ? null : (int)Math.Round(CheckInterval.TotalSeconds);
-            set
-            {
-                if (value.HasValue && value.Value > 0)
-                {
-                    CheckInterval = TimeSpan.FromSeconds(value.Value);
-                }
-            }
-        }
-
         public TimeSpan HttpTimeout { get; set; } = TimeSpan.FromSeconds(30);
 
         internal void Normalize()
         {
-            if (string.IsNullOrWhiteSpace(HealthCheckEndpoint))
+            if (string.IsNullOrWhiteSpace(HealthCheckPath))
             {
-                HealthCheckEndpoint = "/health";
+                HealthCheckPath = "/health";
             }
 
             if (CheckInterval <= TimeSpan.Zero)
             {
-                CheckInterval = TimeSpan.FromMinutes(5);
+                CheckInterval = TimeSpan.FromMinutes(1);
             }
 
             if (HttpTimeout <= TimeSpan.Zero)

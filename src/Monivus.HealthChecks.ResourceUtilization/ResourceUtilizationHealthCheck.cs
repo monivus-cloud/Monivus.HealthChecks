@@ -92,9 +92,4 @@ namespace Monivus.HealthChecks
             return Math.Round(Math.Clamp(memoryUsage, 0, 100), 2);
         }
     }
-
-    public class ResourceUtilizationHealthCheckOptions
-    {
-        public double MemoryUsageDegradedThresholdPercent { get; set; } = 70;
-    }
 }

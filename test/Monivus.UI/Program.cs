@@ -5,7 +5,6 @@ using Monivus.HealthChecks.Redis;
 using Monivus.HealthChecks.Url;
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.AddServiceDefaults();
@@ -28,7 +27,7 @@ builder.Services.AddHealthChecks()
     .AddRedisEntry()
     .AddUrlEntry("https://www.google.com/");
 
-builder.Services.AddMonivusExporter(configuration);
+builder.Services.AddMonivusExporter(builder.Configuration);
 
 var app = builder.Build();
 

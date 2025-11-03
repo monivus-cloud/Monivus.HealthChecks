@@ -202,7 +202,7 @@ namespace Monivus.HealthChecks.Exporter
 
         private static bool TryBuildHealthUri(MonivusExporterOptions options, [NotNullWhen(true)] out Uri? uri, out string? error)
         {
-            if (Uri.TryCreate(options.HealthCheckEndpoint, UriKind.Absolute, out var absolute))
+            if (Uri.TryCreate(options.HealthCheckPath, UriKind.Absolute, out var absolute))
             {
                 uri = absolute;
                 error = null;
@@ -223,7 +223,7 @@ namespace Monivus.HealthChecks.Exporter
                 return false;
             }
 
-            if (!Uri.TryCreate(baseUri, options.HealthCheckEndpoint, out var combined))
+            if (!Uri.TryCreate(baseUri, options.HealthCheckPath, out var combined))
             {
                 uri = null;
                 error = "HealthCheckEndpoint could not be combined with TargetApplicationUrl.";
@@ -237,14 +237,14 @@ namespace Monivus.HealthChecks.Exporter
 
         private static bool TryBuildCentralUri(MonivusExporterOptions options, [NotNullWhen(true)] out Uri? uri, out string? error)
         {
-            if (string.IsNullOrWhiteSpace(options.CentralAppEndpoint))
+            if (string.IsNullOrWhiteSpace(options.MonivusCloudUrl))
             {
                 uri = null;
                 error = "CentralAppEndpoint configuration is required.";
                 return false;
             }
 
-            if (!Uri.TryCreate(options.CentralAppEndpoint, UriKind.Absolute, out var absolute))
+            if (!Uri.TryCreate(options.MonivusCloudUrl, UriKind.Absolute, out var absolute))
             {
                 uri = null;
                 error = "CentralAppEndpoint must be a valid absolute URI.";

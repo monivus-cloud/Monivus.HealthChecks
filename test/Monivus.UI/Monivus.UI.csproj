@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Monivus.HealthChecks.Exporter\Monivus.HealthChecks.Exporter.csproj" />
+    <ProjectReference Include="..\..\src\Monivus.HealthChecks.Redis\Monivus.HealthChecks.Redis.csproj" />
+    <ProjectReference Include="..\..\src\Monivus.HealthChecks.ResourceUtilization\Monivus.HealthChecks.ResourceUtilization.csproj" />
+    <ProjectReference Include="..\..\src\Monivus.HealthChecks.Url\Monivus.HealthChecks.Url.csproj" />
+    <ProjectReference Include="..\..\src\Monivus.HealthChecks\Monivus.HealthChecks.csproj" />
+    <ProjectReference Include="..\Monivus.ServiceDefaults\Monivus.ServiceDefaults.csproj" />
+  </ItemGroup>
+	
+</Project>

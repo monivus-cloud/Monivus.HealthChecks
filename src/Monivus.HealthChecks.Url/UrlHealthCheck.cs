@@ -10,9 +10,8 @@ namespace Monivus.HealthChecks.Url
 
         public UrlHealthCheck(string url, UrlHealthCheckOptions options)
         {
-            _options = options ?? throw new ArgumentNullException(nameof(options));
-            if (string.IsNullOrWhiteSpace(url))
-                throw new ArgumentException("Url must be provided", nameof(url));
+            _options = options;
+
             if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
                 (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
             {
@@ -25,10 +24,12 @@ namespace Monivus.HealthChecks.Url
             HealthCheckContext context,
             CancellationToken cancellationToken = default)
         {
-            using var http = new HttpClient
+            using var http = new HttpClient();
+
+            if (_options.RequestTimeout.HasValue)
             {
-                Timeout = _options.RequestTimeout
-            };
+                http.Timeout = _options.RequestTimeout.Value;
+            }
 
             using var request = new HttpRequestMessage(_options.Method, _url);
 
@@ -47,7 +48,8 @@ namespace Monivus.HealthChecks.Url
                     ["Url"] = _url,
                     ["Method"] = _options.Method.Method,
                     ["StatusCode"] = code,
-                    ["ReasonPhrase"] = response.ReasonPhrase ?? string.Empty
+                    ["ReasonPhrase"] = response.ReasonPhrase ?? string.Empty,
+                    ["ResponseTimeMs"] = sw.Elapsed.TotalMilliseconds
                 };
 
                 if (inExpected)
@@ -78,7 +80,7 @@ namespace Monivus.HealthChecks.Url
                     {
                         ["Url"] = _url,
                         ["Method"] = _options.Method.Method,
-                        ["RequestTimeoutSeconds"] = Math.Round(_options.RequestTimeout.TotalSeconds, 2)
+                        ["RequestTimeoutSeconds"] = Math.Round(http.Timeout.TotalSeconds, 2)
                     });
             }
             catch (Exception ex)

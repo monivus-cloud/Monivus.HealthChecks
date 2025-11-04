@@ -25,6 +25,7 @@
         {
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentException("Url must be provided", nameof(url));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name must be provided", nameof(name));
+
             if (!Uri.TryCreate(url, UriKind.Absolute, out var parsed) ||
                 (parsed.Scheme != Uri.UriSchemeHttp && parsed.Scheme != Uri.UriSchemeHttps))
             {

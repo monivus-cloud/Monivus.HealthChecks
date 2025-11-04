@@ -42,26 +42,26 @@ namespace Monivus.HealthChecks.Exporter
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var options = _optionsMonitor.CurrentValue;
-                    options.Normalize();
+                    var interval = TimeSpan.FromMinutes(options.CheckInterval);
 
                     if (!options.Enabled)
                     {
                         _logger.LogDebug("Monivus exporter disabled; skipping cycle.");
-                        await DelayAsync(options.CheckInterval, stoppingToken);
+                        await DelayAsync(interval, stoppingToken);
                         continue;
                     }
 
-                    if (!TryBuildHealthUri(options, out var healthUri, out var healthError))
+                    if (!TryBuildUri(options.ApplicationHealthCheckUrl, out var healthUri, out var healthError))
                     {
-                        _logger.LogWarning("Health endpoint configuration invalid: {Error}", healthError);
-                        await DelayAsync(TimeSpan.FromMinutes(1), stoppingToken);
+                        _logger.LogWarning("ApplicationHealthCheckUrl configuration invalid: {Error}", healthError);
+                        await DelayAsync(interval, stoppingToken);
                         continue;
                     }
 
-                    if (!TryBuildCentralUri(options, out var centralUri, out var centralError))
+                    if (!TryBuildUri(options.MonivusCloudUrl, out var centralUri, out var centralError))
                     {
-                        _logger.LogWarning("Central endpoint configuration invalid: {Error}", centralError);
-                        await DelayAsync(TimeSpan.FromMinutes(1), stoppingToken);
+                        _logger.LogWarning("MonivusCloudUrl configuration invalid: {Error}", centralError);
+                        await DelayAsync(interval, stoppingToken);
                         continue;
                     }
 
@@ -87,7 +87,7 @@ namespace Monivus.HealthChecks.Exporter
                         _logger.LogError(ex, "Unexpected exporter failure.");
                     }
 
-                    await DelayAsync(options.CheckInterval, stoppingToken);
+                    await DelayAsync(interval, stoppingToken);
                 }
             }
             finally
@@ -151,14 +151,7 @@ namespace Monivus.HealthChecks.Exporter
 
             if (!string.IsNullOrWhiteSpace(options.ApiKey))
             {
-                if (string.Equals(options.ApiKeyHeaderName, "Authorization", StringComparison.OrdinalIgnoreCase))
-                {
-                    request.Headers.Authorization = new AuthenticationHeaderValue(options.ApiKeyScheme, options.ApiKey);
-                }
-                else
-                {
-                    request.Headers.TryAddWithoutValidation(options.ApiKeyHeaderName, options.ApiKey);
-                }
+                request.Headers.Authorization = new AuthenticationHeaderValue("ApiKey", options.ApiKey);
             }
 
             var json = JsonSerializer.Serialize(report, SerializerOptions);
@@ -200,54 +193,19 @@ namespace Monivus.HealthChecks.Exporter
             }
         }
 
-        private static bool TryBuildHealthUri(MonivusExporterOptions options, [NotNullWhen(true)] out Uri? uri, out string? error)
+        private static bool TryBuildUri(string url, [NotNullWhen(true)] out Uri? uri, out string? error)
         {
-            if (Uri.TryCreate(options.HealthCheckPath, UriKind.Absolute, out var absolute))
-            {
-                uri = absolute;
-                error = null;
-                return true;
-            }
-
-            if (string.IsNullOrWhiteSpace(options.TargetApplicationUrl))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 uri = null;
-                error = "TargetApplicationUrl must be provided when HealthCheckEndpoint is relative.";
+                error = "MonivusCloudUrl configuration is required.";
                 return false;
             }
 
-            if (!Uri.TryCreate(options.TargetApplicationUrl, UriKind.Absolute, out var baseUri))
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var absolute))
             {
                 uri = null;
-                error = "TargetApplicationUrl must be a valid absolute URI.";
-                return false;
-            }
-
-            if (!Uri.TryCreate(baseUri, options.HealthCheckPath, out var combined))
-            {
-                uri = null;
-                error = "HealthCheckEndpoint could not be combined with TargetApplicationUrl.";
-                return false;
-            }
-
-            uri = combined;
-            error = null;
-            return true;
-        }
-
-        private static bool TryBuildCentralUri(MonivusExporterOptions options, [NotNullWhen(true)] out Uri? uri, out string? error)
-        {
-            if (string.IsNullOrWhiteSpace(options.MonivusCloudUrl))
-            {
-                uri = null;
-                error = "CentralAppEndpoint configuration is required.";
-                return false;
-            }
-
-            if (!Uri.TryCreate(options.MonivusCloudUrl, UriKind.Absolute, out var absolute))
-            {
-                uri = null;
-                error = "CentralAppEndpoint must be a valid absolute URI.";
+                error = "MonivusCloudUrl must be a valid absolute URI.";
                 return false;
             }
 

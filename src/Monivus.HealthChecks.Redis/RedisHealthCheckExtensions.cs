@@ -1,9 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Monivus.HealthChecks.Redis;
 using StackExchange.Redis;
 
-namespace Monivus.HealthChecks.Redis
+namespace Monivus.HealthChecks
 {
     public static class RedisHealthCheckExtensions
     {
@@ -27,7 +28,7 @@ namespace Monivus.HealthChecks.Redis
 
             builder.Services
                 .AddOptions<RedisHealthCheckOptions>()
-                .BindConfiguration($"Monivus:{name}");
+                .BindConfiguration($"Monivus:Redis");
 
             // Register the health check with the provided parameters
             var registration = new HealthCheckRegistration(

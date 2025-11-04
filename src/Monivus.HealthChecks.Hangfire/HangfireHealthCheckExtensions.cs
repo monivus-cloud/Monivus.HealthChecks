@@ -2,8 +2,9 @@ using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Monivus.HealthChecks.Hangfire;
 
-namespace Monivus.HealthChecks.Hangfire
+namespace Monivus.HealthChecks
 {
     public static class HangfireHealthCheckExtensions
     {
@@ -18,12 +19,16 @@ namespace Monivus.HealthChecks.Hangfire
         /// <returns>The health checks builder</returns>
         public static IHealthChecksBuilder AddHangfireEntry(
             this IHealthChecksBuilder builder,
-            string name = "hangfire",
+            string name = "Hangfire",
             HealthStatus? failureStatus = null,
             IEnumerable<string>? tags = null,
             TimeSpan? timeout = null)
         {
             ArgumentNullException.ThrowIfNull(builder);
+
+            builder.Services
+                .AddOptions<HangfireHealthCheckOptions>()
+                .BindConfiguration($"Monivus:Hangfire");
 
             return builder.Add(new HealthCheckRegistration(
                 name,
@@ -42,6 +47,7 @@ namespace Monivus.HealthChecks.Hangfire
                         var monitoringApi = jobStorage.GetMonitoringApi();
                         var opts = serviceProvider.GetService<IOptions<HangfireHealthCheckOptions>>()?.Value
                                    ?? new HangfireHealthCheckOptions();
+
                         return new HangfireHealthCheck(monitoringApi, opts);
                     }
                     catch (Exception ex)

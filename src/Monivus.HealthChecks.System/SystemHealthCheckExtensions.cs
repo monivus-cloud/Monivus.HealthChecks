@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
+using Monivus.HealthChecks.System;
 
 namespace Monivus.HealthChecks
 {
@@ -7,7 +9,6 @@ namespace Monivus.HealthChecks
     {
         public static IHealthChecksBuilder AddSystemEntry(
             this IHealthChecksBuilder builder,
-            Action<SystemHealthCheckOptions>? configure = null,
             string name = "System",
             HealthStatus? failureStatus = null,
             IEnumerable<string>? tags = null,
@@ -15,33 +16,18 @@ namespace Monivus.HealthChecks
         {
             ArgumentNullException.ThrowIfNull(builder);
 
-            return builder.AddSystemEntry(
-                _ =>
-                {
-                    var options = new SystemHealthCheckOptions();
-                    configure?.Invoke(options);
-                    return options;
-                },
-                name,
-                failureStatus,
-                PrependTypeTag("System", tags),
-                timeout);
-        }
-
-        public static IHealthChecksBuilder AddSystemEntry(
-            this IHealthChecksBuilder builder,
-            Func<IServiceProvider, SystemHealthCheckOptions> optionsFactory,
-            string name = "System",
-            HealthStatus? failureStatus = null,
-            IEnumerable<string>? tags = null,
-            TimeSpan? timeout = null)
-        {
-            ArgumentNullException.ThrowIfNull(builder);
-            ArgumentNullException.ThrowIfNull(optionsFactory);
+            builder.Services
+                .AddOptions<SystemHealthCheckOptions>()
+                .BindConfiguration($"Monivus:System");
 
             return builder.Add(new HealthCheckRegistration(
                 name,
-                sp => new SystemHealthCheck(optionsFactory(sp)),
+                sp =>
+                {
+                    var opts = sp.GetService<IOptions<SystemHealthCheckOptions>>()?.Value ?? new SystemHealthCheckOptions();
+
+                    return new SystemHealthCheck(opts);
+                },
                 failureStatus,
                 PrependTypeTag("System", tags),
                 timeout));

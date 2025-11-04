@@ -1,8 +1,5 @@
 using Monivus.UI.Components;
 using Monivus.HealthChecks;
-using Monivus.HealthChecks.Exporter;
-using Monivus.HealthChecks.Redis;
-using Monivus.HealthChecks.Url;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +22,7 @@ builder.AddRedisDistributedCache(connectionName: "cache",
 builder.Services.AddHealthChecks()
     .AddSystemEntry()
     .AddRedisEntry()
-    .AddUrlEntry("https://www.google.com/");
+    .AddUrlEntry("https://www.google.com/", "google");
 
 builder.Services.AddMonivusExporter(builder.Configuration);
 

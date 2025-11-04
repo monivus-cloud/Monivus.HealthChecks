@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace Monivus.HealthChecks
+namespace Monivus.HealthChecks.System
 {
     public sealed class SystemHealthCheck : IHealthCheck
     {
@@ -9,7 +9,7 @@ namespace Monivus.HealthChecks
 
         public SystemHealthCheck(SystemHealthCheckOptions options)
         {
-            _options = options ?? throw new ArgumentNullException(nameof(options));
+            _options = options;
         }
 
         public Task<HealthCheckResult> CheckHealthAsync(
@@ -71,10 +71,10 @@ namespace Monivus.HealthChecks
             var status = HealthStatus.Healthy;
             var description = "System utilization within defined thresholds.";
 
-            if (_options.MemoryUsageDegradedThresholdPercent != 0 && memoryUsagePercent >= _options.MemoryUsageDegradedThresholdPercent)
+            if (_options.MemoryUsageThresholdPercent.HasValue && memoryUsagePercent >= _options.MemoryUsageThresholdPercent.Value)
             {
                 status = HealthStatus.Degraded;
-                description = $"Process memory usage {Math.Round(memoryUsagePercent, 2)}% exceeds {_options.MemoryUsageDegradedThresholdPercent}% threshold.";
+                description = $"Process memory usage {Math.Round(memoryUsagePercent, 2)}% exceeds {_options.MemoryUsageThresholdPercent.Value}% threshold.";
             }
 
             return Task.FromResult(new HealthCheckResult(

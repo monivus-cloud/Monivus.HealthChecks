@@ -8,10 +8,12 @@ namespace Monivus.HealthChecks.Hangfire
         private readonly IMonitoringApi _monitoringApi;
         private readonly HangfireHealthCheckOptions _options;
 
-        public HangfireHealthCheck(IMonitoringApi monitoringApi, HangfireHealthCheckOptions? options = null)
+        public HangfireHealthCheck(IMonitoringApi monitoringApi, HangfireHealthCheckOptions options)
         {
-            _monitoringApi = monitoringApi ?? throw new ArgumentNullException(nameof(monitoringApi));
-            _options = options ?? new HangfireHealthCheckOptions();
+            ArgumentNullException.ThrowIfNull(monitoringApi);
+
+            _monitoringApi = monitoringApi;
+            _options = options;
         }
 
         public Task<HealthCheckResult> CheckHealthAsync(
@@ -32,25 +34,24 @@ namespace Monivus.HealthChecks.Hangfire
                     return Task.FromResult(HealthCheckResult.Unhealthy("Hangfire storage connection failed"));
                 }
 
-                if (_options.MaxFailedJobs > 0 && stats.Failed > _options.MaxFailedJobs)
+                if (_options.MaxFailedJobs.HasValue && stats.Failed > _options.MaxFailedJobs.Value)
                 {
                     return Task.FromResult(HealthCheckResult.Degraded(
-                        $"Hangfire is running but has {stats.Failed} failed job(s), expected max {_options.MaxFailedJobs}."));
+                        $"Hangfire is running but has {stats.Failed} failed job(s), expected max {_options.MaxFailedJobs.Value}."));
                 }
 
-                if (_options.MaxEnqueuedJobs > 0 && stats.Enqueued > _options.MaxEnqueuedJobs)
+                if (_options.MaxEnqueuedJobs.HasValue && stats.Enqueued > _options.MaxEnqueuedJobs.Value)
                 {
                     return Task.FromResult(HealthCheckResult.Degraded(
-                        $"Hangfire is running but has {stats.Enqueued} enqueued job(s), expected max {_options.MaxEnqueuedJobs}."));
+                        $"Hangfire is running but has {stats.Enqueued} enqueued job(s), expected max {_options.MaxEnqueuedJobs.Value}."));
                 }
 
-                var now = DateTime.UtcNow;
                 var serverCount = servers.Count;
 
-                if (serverCount < _options.MinServers)
+                if (_options.MinServers.HasValue && serverCount < _options.MinServers.Value)
                 {
                     return Task.FromResult(HealthCheckResult.Degraded(
-                        $"Hangfire has {serverCount} registered servers, but at least {_options.MinServers} are expected."));
+                        $"Hangfire has {serverCount} registered servers, but at least {_options.MinServers.Value} are expected."));
                 }
 
                 var lastHeartbeat = servers

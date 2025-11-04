@@ -38,8 +38,6 @@ namespace Monivus.HealthChecks
             configure(options);
             options.Normalize();
 
-            // Allow zero or more remote endpoints (if zero, behaves like default writer for local entries)
-
             return app.UseHealthChecks(path, new HealthCheckOptions
             {
                 ResponseWriter = (ctx, report) => WriteAggregatedResponseAsync(ctx, report, options)

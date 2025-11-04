@@ -1,85 +1,47 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Monivus.HealthChecks.Url;
 
-namespace Monivus.HealthChecks.Url
+namespace Monivus.HealthChecks
 {
     public static class UrlHealthCheckExtensions
     {
         public static IHealthChecksBuilder AddUrlEntry(
             this IHealthChecksBuilder builder,
             string url,
-            string? name = null,
-            HealthStatus? failureStatus = null,
-            IEnumerable<string>? tags = null,
-            TimeSpan? timeout = null,
-            Action<UrlHealthCheckOptions>? configure = null)
-        {
-            ArgumentNullException.ThrowIfNull(builder);
-            if (string.IsNullOrWhiteSpace(url))
-                throw new ArgumentNullException(nameof(url));
-            if (!IsValidHttpUrl(url))
-                throw new ArgumentException("Url must be an absolute HTTP/HTTPS URL", nameof(url));
-
-            return builder.Add(new HealthCheckRegistration(
-                name ?? url,
-                sp =>
-                {
-                    var baseOpts = sp.GetService<IOptions<UrlHealthCheckOptions>>()?.Value;
-                    var options = baseOpts is null
-                        ? new UrlHealthCheckOptions()
-                        : new UrlHealthCheckOptions
-                        {
-                            Method = baseOpts.Method,
-                            RequestTimeout = baseOpts.RequestTimeout,
-                            ExpectedStatusCodes = baseOpts.ExpectedStatusCodes is null ? null : new HashSet<int>(baseOpts.ExpectedStatusCodes),
-                            SlowResponseThreshold = baseOpts.SlowResponseThreshold
-                        };
-                    if (timeout.HasValue)
-                    {
-                        options.RequestTimeout = timeout.Value;
-                    }
-                    configure?.Invoke(options);
-                    return new UrlHealthCheck(url, options);
-                },
-                failureStatus,
-                PrependTypeTag("Url", tags),
-                timeout));
-        }
-
-        public static IHealthChecksBuilder AddUrlEntry(
-            this IHealthChecksBuilder builder,
-            Func<IServiceProvider, string> urlFactory,
-            string name = "url",
+            string name,
             HealthStatus? failureStatus = null,
             IEnumerable<string>? tags = null,
             TimeSpan? timeout = null)
         {
             ArgumentNullException.ThrowIfNull(builder);
-            ArgumentNullException.ThrowIfNull(urlFactory);
+
+            if (string.IsNullOrWhiteSpace(url))
+                throw new ArgumentNullException(nameof(url));
+
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+
+            if (!IsValidHttpUrl(url))
+                throw new ArgumentException("Url must be an absolute HTTP/HTTPS URL", nameof(url));
+
+            builder.Services
+                .AddOptions<UrlHealthCheckOptions>()
+                .BindConfiguration($"Monivus:Url:{name}");
 
             return builder.Add(new HealthCheckRegistration(
                 name,
                 sp =>
                 {
-                    var urlValue = urlFactory(sp);
-                    if (string.IsNullOrWhiteSpace(urlValue) || !IsValidHttpUrl(urlValue))
-                        throw new ArgumentException("Url must be an absolute HTTP/HTTPS URL", nameof(urlFactory));
-                    var baseOpts = sp.GetService<IOptions<UrlHealthCheckOptions>>()?.Value;
-                    var options = baseOpts is null
-                        ? new UrlHealthCheckOptions()
-                        : new UrlHealthCheckOptions
-                        {
-                            Method = baseOpts.Method,
-                            RequestTimeout = baseOpts.RequestTimeout,
-                            ExpectedStatusCodes = baseOpts.ExpectedStatusCodes is null ? null : new HashSet<int>(baseOpts.ExpectedStatusCodes),
-                            SlowResponseThreshold = baseOpts.SlowResponseThreshold
-                        };
+                    var opts = sp.GetService<IOptions<UrlHealthCheckOptions>>()?.Value ?? new UrlHealthCheckOptions();
+
                     if (timeout.HasValue)
                     {
-                        options.RequestTimeout = timeout.Value;
+                        opts.RequestTimeout = timeout.Value;
                     }
-                    return new UrlHealthCheck(urlValue, options);
+                    
+                    return new UrlHealthCheck(url, opts);
                 },
                 failureStatus,
                 PrependTypeTag("Url", tags),

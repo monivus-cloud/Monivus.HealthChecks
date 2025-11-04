@@ -4,12 +4,10 @@ namespace Monivus.HealthChecks.Url
     {
         public HttpMethod Method { get; set; } = HttpMethod.Get;
 
-        // Hard request timeout for the HTTP call
-        public TimeSpan RequestTimeout { get; set; } = TimeSpan.FromSeconds(2);
+        public TimeSpan? RequestTimeout { get; set; }
 
-        public ISet<int>? ExpectedStatusCodes { get; set; }
+        public HashSet<int>? ExpectedStatusCodes { get; set; }
 
-        // If set, responses taking longer than this are reported Degraded
         public TimeSpan? SlowResponseThreshold { get; set; }
     }
 }

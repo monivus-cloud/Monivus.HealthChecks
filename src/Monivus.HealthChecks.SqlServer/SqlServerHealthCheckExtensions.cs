@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Monivus.HealthChecks.SqlServer
 {
-    public static class SqlServerHealthCheckBuilderExtensions
+    public static class SqlServerHealthCheckExtensions
     {
         public static IHealthChecksBuilder AddSqlServerEntry(
             this IHealthChecksBuilder builder,

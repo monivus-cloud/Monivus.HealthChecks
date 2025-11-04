@@ -1,6 +1,7 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Monivus.HealthChecks.SqlServer
 {
@@ -8,72 +9,28 @@ namespace Monivus.HealthChecks.SqlServer
     {
         public static IHealthChecksBuilder AddSqlServerEntry(
             this IHealthChecksBuilder builder,
-            string connectionStringOrName,
-            string testQuery = "SELECT 1",
-            string? name = null,
+            string name = "SqlServer",
             HealthStatus? failureStatus = null,
             IEnumerable<string>? tags = null,
             TimeSpan? timeout = null)
         {
-            if (builder == null)
-                throw new ArgumentNullException(nameof(builder));
-            if (string.IsNullOrEmpty(connectionStringOrName))
-                throw new ArgumentNullException(nameof(connectionStringOrName));
+            ArgumentNullException.ThrowIfNull(builder);
+
+            builder.Services
+                .AddOptions<SqlServerHealthCheckOptions>()
+                .BindConfiguration($"Monivus:SqlServer");
 
             return builder.Add(new HealthCheckRegistration(
-                name ?? "sqlserver",
+                name,
                 sp =>
                 {
-                    var resolved = ResolveConnectionString(sp, connectionStringOrName);
-                    var options = new SqlServerHealthCheckOptions
-                    {
-                        ConnectionString = resolved,
-                        TestQuery = testQuery
-                    };
+                    var opts = sp.GetService<IOptions<SqlServerHealthCheckOptions>>()?.Value ?? new SqlServerHealthCheckOptions();
 
-                    if (timeout.HasValue)
-                    {
-                        options.Timeout = timeout.Value;
-                    }
+                    ArgumentNullException.ThrowIfNull(opts.ConnectionStringOrName, "ConnectionName must be provided in configuration or options");
 
-                    return new SqlServerHealthCheck(options);
-                },
-                failureStatus,
-                PrependTypeTag("SqlServer", tags),
-                timeout));
-        }
+                    var connectionString = ResolveConnectionString(sp, opts.ConnectionStringOrName);
 
-        public static IHealthChecksBuilder AddSqlServerEntry(
-            this IHealthChecksBuilder builder,
-            Func<IServiceProvider, string> connectionStringFactory,
-            string testQuery = "SELECT 1",
-            string? name = null,
-            HealthStatus? failureStatus = null,
-            IEnumerable<string>? tags = null,
-            TimeSpan? timeout = null)
-        {
-            if (builder == null)
-                throw new ArgumentNullException(nameof(builder));
-            if (connectionStringFactory == null)
-                throw new ArgumentNullException(nameof(connectionStringFactory));
-
-            return builder.Add(new HealthCheckRegistration(
-                name ?? "sqlserver",
-                sp =>
-                {
-                    var connectionString = connectionStringFactory(sp);
-                    var options = new SqlServerHealthCheckOptions
-                    {
-                        ConnectionString = connectionString,
-                        TestQuery = testQuery
-                    };
-
-                    if (timeout.HasValue)
-                    {
-                        options.Timeout = timeout.Value;
-                    }
-
-                    return new SqlServerHealthCheck(options);
+                    return new SqlServerHealthCheck(opts, connectionString);
                 },
                 failureStatus,
                 PrependTypeTag("SqlServer", tags),
@@ -90,6 +47,7 @@ namespace Monivus.HealthChecks.SqlServer
         private static string ResolveConnectionString(IServiceProvider sp, string connectionStringOrName)
         {
             var configuration = sp.GetService<IConfiguration>();
+
             if (configuration != null)
             {
                 var byName = configuration.GetConnectionString(connectionStringOrName);
@@ -99,17 +57,7 @@ namespace Monivus.HealthChecks.SqlServer
                 }
             }
 
-            if (LooksLikeConnectionString(connectionStringOrName))
-            {
-                return connectionStringOrName;
-            }
-
             return connectionStringOrName;
-        }
-
-        private static bool LooksLikeConnectionString(string value)
-        {
-            return value.Contains('=');
         }
     }
 }

@@ -7,12 +7,15 @@ namespace Monivus.HealthChecks.Redis
     public class RedisHealthCheck : IHealthCheck
     {
         private readonly IConnectionMultiplexer _redisConnection;
-        private readonly double _slowPingThresholdMilliseconds;
+        private readonly RedisHealthCheckOptions _options;
 
-        public RedisHealthCheck(IConnectionMultiplexer redisConnection, double slowPingThresholdMilliseconds = 1000)
+        public RedisHealthCheck(IConnectionMultiplexer redisConnection, RedisHealthCheckOptions options)
         {
-            _redisConnection = redisConnection ?? throw new ArgumentNullException(nameof(redisConnection));
-            _slowPingThresholdMilliseconds = slowPingThresholdMilliseconds;
+            ArgumentNullException.ThrowIfNull(redisConnection);
+            ArgumentNullException.ThrowIfNull(options);
+
+            _redisConnection = redisConnection;
+            _options = options;
         }
 
         public async Task<HealthCheckResult> CheckHealthAsync(
@@ -53,7 +56,7 @@ namespace Monivus.HealthChecks.Redis
 
                 var healthData = BuildHealthData(server, infoValues, pingResponse.TotalMilliseconds, databaseSize, lastSave);
 
-                if (pingResponse.TotalMilliseconds > _slowPingThresholdMilliseconds)
+                if (_options.SlowPingThresholdMilliseconds.HasValue && pingResponse.TotalMilliseconds > _options.SlowPingThresholdMilliseconds)
                 {
                     return HealthCheckResult.Degraded(
                         $"Redis ping exceeded threshold ({pingResponse.TotalMilliseconds}ms).",
@@ -87,7 +90,6 @@ namespace Monivus.HealthChecks.Redis
         {
             var healthData = new Dictionary<string, object>
             {
-                ["Endpoint"] = server.EndPoint?.ToString() ?? string.Empty,
                 ["IsConnected"] = server.IsConnected,
                 ["ServerVersion"] = server.Version.ToString(),
                 ["ServerType"] = server.ServerType.ToString(),
@@ -106,24 +108,22 @@ namespace Monivus.HealthChecks.Redis
             var opsPerSecond = TryGetInfoInt64(infoValues, "instantaneous_ops_per_sec");
             var keyspaceHits = TryGetInfoInt64(infoValues, "keyspace_hits");
             var keyspaceMisses = TryGetInfoInt64(infoValues, "keyspace_misses");
-            var role = GetInfoValue(infoValues, "role");
             var uptimeSeconds = TryGetInfoInt64(infoValues, "uptime_in_seconds");
             var memFragmentation = TryGetInfoDouble(infoValues, "mem_fragmentation_ratio");
 
             if (usedMemoryBytes.HasValue)
             {
-                healthData["UsedMemoryBytes"] = usedMemoryBytes.Value;
-                healthData["UsedMemoryMegabytes"] = Math.Round(usedMemoryBytes.Value / 1024d / 1024d, 2);
+                healthData["UsedMemoryMb"] = Math.Round(usedMemoryBytes.Value / 1024d / 1024d, 2);
             }
 
             if (usedMemoryRssBytes.HasValue)
             {
-                healthData["UsedMemoryRssBytes"] = usedMemoryRssBytes.Value;
+                healthData["UsedMemoryRssMb"] = Math.Round(usedMemoryRssBytes.Value / 1024d / 1024d, 2);
             }
 
             if (systemMemoryBytes.HasValue)
             {
-                healthData["TotalSystemMemoryBytes"] = systemMemoryBytes.Value;
+                healthData["TotalSystemMemoryMb"] = Math.Round(systemMemoryBytes.Value / 1024d / 1024d, 2);
                 if (usedMemoryBytes.HasValue && systemMemoryBytes.Value > 0)
                 {
                     healthData["MemoryUsagePercent"] = Math.Round(
@@ -149,11 +149,6 @@ namespace Monivus.HealthChecks.Redis
             if (uptimeSeconds.HasValue)
             {
                 healthData["UptimeSeconds"] = uptimeSeconds.Value;
-            }
-
-            if (!string.IsNullOrWhiteSpace(role))
-            {
-                healthData["ReplicationRole"] = role!;
             }
 
             if (memFragmentation.HasValue)

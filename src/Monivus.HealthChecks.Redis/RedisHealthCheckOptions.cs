@@ -2,6 +2,7 @@ namespace Monivus.HealthChecks.Redis
 {
     public class RedisHealthCheckOptions
     {
-        public double SlowPingThresholdMilliseconds { get; set; } = 1000;
+        public string? ConnectionString { get; set; }
+        public double? SlowPingThresholdMilliseconds { get; set; }
     }
 }

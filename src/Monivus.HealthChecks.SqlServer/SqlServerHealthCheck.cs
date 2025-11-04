@@ -7,10 +7,12 @@ namespace Monivus.HealthChecks.SqlServer
     public class SqlServerHealthCheck : IHealthCheck
     {
         private readonly SqlServerHealthCheckOptions _options;
+        private readonly string _connectionString;
 
-        public SqlServerHealthCheck(SqlServerHealthCheckOptions options)
+        public SqlServerHealthCheck(SqlServerHealthCheckOptions options, string connectionString)
         {
             _options = options;
+            _connectionString = connectionString;
         }
 
         public async Task<HealthCheckResult> CheckHealthAsync(
@@ -19,16 +21,16 @@ namespace Monivus.HealthChecks.SqlServer
         {
             try
             {
-                using var connection = new SqlConnection(_options.ConnectionString);
+                using var connection = new SqlConnection(_connectionString);
                 var openWatch = Stopwatch.StartNew();
                 await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
                 openWatch.Stop();
 
-                using var command = new SqlCommand(_options.TestQuery, connection);
+                using var command = new SqlCommand(_options.CommandText, connection);
 
-                if (_options.Timeout.HasValue)
+                if (_options.CommandTimeout.HasValue)
                 {
-                    command.CommandTimeout = (int)_options.Timeout.Value.TotalSeconds;
+                    command.CommandTimeout = _options.CommandTimeout.Value;
                 }
 
                 var queryWatch = Stopwatch.StartNew();
@@ -41,12 +43,12 @@ namespace Monivus.HealthChecks.SqlServer
                     {
                         { "ConnectionTimeout", connection.ConnectionTimeout },
                         { "State", connection.State },
-                        { "CommandTimeoutSeconds", command.CommandTimeout },
+                        { "CommandTimeout", command.CommandTimeout },
                         { "ConnectionOpenMilliseconds", Math.Round(openWatch.Elapsed.TotalMilliseconds, 2) },
                         { "QueryDurationMilliseconds", Math.Round(queryWatch.Elapsed.TotalMilliseconds, 2) },
                     };
 
-                    return HealthCheckResult.Healthy(null, data);
+                    return HealthCheckResult.Healthy("SqlServer is healthy and running.", data);
                 }
 
                 return HealthCheckResult.Unhealthy(

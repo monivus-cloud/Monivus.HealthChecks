@@ -9,14 +9,23 @@ namespace Monivus.HealthChecks
     public static class HangfireHealthCheckExtensions
     {
         /// <summary>
-        /// Adds a health check for Hangfire background job processing system
+        /// Registers a Hangfire-based health check with the provided <see cref="IHealthChecksBuilder"/>.
+        /// Binds configuration from the "Monivus:Hangfire" section to <see cref="HangfireHealthCheckOptions"/>,
+        /// resolves the Hangfire <see cref="JobStorage"/> (or falls back to <see cref="JobStorage.Current"/>),
+        /// obtains the monitoring API and constructs a <see cref="HangfireHealthCheck"/> instance.
         /// </summary>
-        /// <param name="builder">The health checks builder</param>
-        /// <param name="name">The health check name (optional)</param>
-        /// <param name="failureStatus">The failure status (optional)</param>
-        /// <param name="tags">Additional tags (optional)</param>
-        /// <param name="timeout">The health check timeout (optional)</param>
-        /// <returns>The health checks builder</returns>
+        /// <param name="builder">The health checks builder to which the Hangfire check will be added.</param>
+        /// <param name="name">The name of the health check registration. Defaults to "Hangfire".</param>
+        /// <param name="failureStatus">
+        /// Optional <see cref="HealthStatus"/> to report when the check fails. If null, the default failure status is used.
+        /// </param>
+        /// <param name="tags">Optional tags to associate with the health check registration.</param>
+        /// <param name="timeout">Optional timeout for the health check execution.</param>
+        /// <returns>The same <see cref="IHealthChecksBuilder"/> instance to allow chaining.</returns>
+        /// <remarks>
+        /// Throws <see cref="InvalidOperationException"/> if the Hangfire <see cref="JobStorage"/> cannot be resolved
+        /// or if constructing the health check fails.
+        /// </remarks>
         public static IHealthChecksBuilder AddHangfireEntry(
             this IHealthChecksBuilder builder,
             string name = "Hangfire",

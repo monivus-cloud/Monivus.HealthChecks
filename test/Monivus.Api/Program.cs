@@ -1,7 +1,6 @@
 using Hangfire;
 using Monivus.Api;
 using Monivus.HealthChecks;
-using Monivus.HealthChecks.SqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 

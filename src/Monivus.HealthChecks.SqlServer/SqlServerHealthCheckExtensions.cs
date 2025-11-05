@@ -2,11 +2,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Monivus.HealthChecks.SqlServer;
 
-namespace Monivus.HealthChecks.SqlServer
+namespace Monivus.HealthChecks
 {
     public static class SqlServerHealthCheckExtensions
     {
+        /// <summary>
+        /// Adds a SQL Server health check registration to the provided <see cref="IHealthChecksBuilder"/>.
+        /// The method binds <see cref="SqlServerHealthCheckOptions"/> from configuration path "Monivus:SqlServer"
+        /// and creates a <see cref="SqlServerHealthCheck"/> using the resolved connection string.
+        /// </summary>
+        /// <param name="builder">The health checks builder to add the registration to.</param>
+        /// <param name="name">The name of the health check. Defaults to "SqlServer".</param>
+        /// <param name="failureStatus">The <see cref="HealthStatus"/> to report when the health check fails.</param>
+        /// <param name="tags">Optional tags to associate with the health check.</param>
+        /// <param name="timeout">Optional timeout for the health check execution.</param>
+        /// <returns>The same <see cref="IHealthChecksBuilder"/> instance so that additional calls can be chained.</returns>
         public static IHealthChecksBuilder AddSqlServerEntry(
             this IHealthChecksBuilder builder,
             string name = "SqlServer",

@@ -6,6 +6,15 @@ namespace Monivus.HealthChecks
 {
     public static class MonivusExporterExtensions
     {
+        /// <summary>
+        /// Adds and configures the Monivus exporter services to the provided <see cref="IServiceCollection"/>.
+        /// Binds <see cref="MonivusExporterOptions"/> to the "Monivus:Exporter" configuration section, and registers
+        /// the required runtime services such as an <see cref="System.Net.Http.HttpClient"/> and the
+        /// <see cref="MonivusExporterBackgroundService"/> hosted service.
+        /// </summary>
+        /// <param name="services">The service collection to register services into.</param>
+        /// <param name="configuration">The application configuration used to bind exporter options.</param>
+        /// <returns>The same <see cref="IServiceCollection"/> instance to allow chaining of additional registrations.</returns>
         public static IServiceCollection AddMonivusExporter(
             this IServiceCollection services,
             IConfiguration configuration)

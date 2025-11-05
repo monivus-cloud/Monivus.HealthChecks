@@ -18,6 +18,12 @@ namespace Monivus.HealthChecks
             Converters = { new JsonStringEnumConverter() }
         };
 
+        /// <summary>
+        /// Registers the Monivus health-check endpoint into the application's middleware pipeline.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> used to configure middleware.</param>
+        /// <param name="path">The request path at which the health-check endpoint is exposed. Defaults to <c>/health</c>.</param>
+        /// <returns>The same <see cref="IApplicationBuilder"/> instance to allow chaining further configuration.</returns>
         public static IApplicationBuilder UseMonivusHealthChecks(this IApplicationBuilder app, string path = "/health")
         {
             return app.UseHealthChecks(path, new HealthCheckOptions
@@ -26,6 +32,17 @@ namespace Monivus.HealthChecks
             });
         }
 
+        /// <summary>
+        /// Registers an aggregated Monivus health-check endpoint into the application's middleware pipeline.
+        /// This endpoint runs the application's local health checks and can optionally fetch and merge
+        /// health reports from one or more remote endpoints configured via <see cref="AggregatedHealthOptions"/>.
+        /// The aggregated report is returned as JSON.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> used to configure middleware.</param>
+        /// <param name="configure">An action to configure <see cref="AggregatedHealthOptions"/> (remote endpoints, timeouts, and summary inclusion).</param>
+        /// <param name="path">The request path at which the aggregated health-check endpoint is exposed. Defaults to <c>/health</c>.</param>
+        /// <returns>The same <see cref="IApplicationBuilder"/> instance to allow chaining further configuration.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="app"/> or <paramref name="configure"/> is <c>null</c>.</exception>
         public static IApplicationBuilder UseMonivusAggregatedHealthChecks(
             this IApplicationBuilder app,
             Action<AggregatedHealthOptions> configure,

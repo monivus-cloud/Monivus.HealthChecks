@@ -9,14 +9,18 @@ namespace Monivus.HealthChecks
     public static class RedisHealthCheckExtensions
     {
         /// <summary>
-        /// Adds a health check for Redis using the provided connection multiplexer
+        /// Registers a Redis health check with the provided <see cref="IHealthChecksBuilder"/>.
+        /// Binds <see cref="RedisHealthCheckOptions"/> from configuration section "Monivus:Redis".
+        /// If <see cref="RedisHealthCheckOptions.ConnectionString"/> is not set, the health check
+        /// will use an <see cref="IConnectionMultiplexer"/> resolved from DI; otherwise it will
+        /// create a new <see cref="ConnectionMultiplexer"/> using the configured connection string.
         /// </summary>
-        /// <param name="builder">The health checks builder</param>
-        /// <param name="name">The health check name (optional)</param>
-        /// <param name="failureStatus">The status to report when the health check fails (optional)</param>
-        /// <param name="tags">A list of tags that can be used to filter health checks (optional)</param>
-        /// <param name="timeout">The health check timeout (optional)</param>
-        /// <returns>The health checks builder</returns>
+        /// <param name="builder">The health checks builder to add the Redis health check to.</param>
+        /// <param name="name">The registration name for the health check. Defaults to "Redis".</param>
+        /// <param name="failureStatus">The <see cref="HealthStatus"/> to report when the check fails. If null, the default is used.</param>
+        /// <param name="tags">Optional tags to associate with the health check.</param>
+        /// <param name="timeout">An optional timeout to apply to the health check execution.</param>
+        /// <returns>The original <see cref="IHealthChecksBuilder"/>, allowing further configuration chaining.</returns>
         public static IHealthChecksBuilder AddRedisEntry(
             this IHealthChecksBuilder builder,
             string name = "Redis",

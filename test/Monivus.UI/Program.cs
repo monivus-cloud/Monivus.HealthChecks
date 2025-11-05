@@ -22,7 +22,7 @@ builder.AddRedisDistributedCache(connectionName: "cache",
 builder.Services.AddHealthChecks()
     .AddSystemEntry()
     .AddRedisEntry()
-    .AddUrlEntry("https://www.google.com/", "google");
+    .AddUrlEntry("google");
 
 builder.Services.AddMonivusExporter(builder.Configuration);
 

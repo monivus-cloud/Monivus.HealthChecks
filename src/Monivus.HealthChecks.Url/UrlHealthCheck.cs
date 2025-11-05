@@ -11,12 +11,6 @@ namespace Monivus.HealthChecks.Url
         public UrlHealthCheck(string url, UrlHealthCheckOptions options)
         {
             _options = options;
-
-            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
-                (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
-            {
-                throw new ArgumentException("Url must be an absolute HTTP/HTTPS URL", nameof(url));
-            }
             _url = url;
         }
 
@@ -49,7 +43,6 @@ namespace Monivus.HealthChecks.Url
                     ["Method"] = _options.Method.Method,
                     ["StatusCode"] = code,
                     ["ReasonPhrase"] = response.ReasonPhrase ?? string.Empty,
-                    ["ResponseTimeMs"] = sw.Elapsed.TotalMilliseconds
                 };
 
                 if (inExpected)

@@ -1,9 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>Monivus.HealthChecks.Exporter</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Emrah KONDUR</Authors>
+    <Company>Monivus</Company>
+    <Description>Background service exporting Monivus health reports to a central endpoint.</Description>
+    <PackageTags>monivus;healthchecks;aspnetcore;monitoring;observability;exporter</PackageTags>
+    <RepositoryUrl>https://github.com/monivus-cloud/Monivus.HealthChecks</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/monivus-cloud/Monivus.HealthChecks</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +30,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Monivus.HealthChecks\Monivus.HealthChecks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\\..\\README.md" Pack="true" PackagePath="\\" />
   </ItemGroup>
 
 </Project>

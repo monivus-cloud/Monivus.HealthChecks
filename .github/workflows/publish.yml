@@ -1,0 +1,54 @@
+name: Publish NuGet Packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️ Checkout repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2️ Setup .NET 9 SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      # 3️ Extract version from git tag (e.g. v1.2.3 -> 1.2.3)
+      - name: Extract version from tag
+        id: get_version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      # 4️ Restore dependencies
+      - name: Restore
+        run: dotnet restore
+
+      # 5️ Build all projects in Release mode
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # 6️ Pack all projects under src/ into ./nupkgs
+      - name: Pack all projects
+        run: |
+          mkdir -p ./nupkgs
+          for proj in $(find src -name '*.csproj'); do
+            echo "Packing $proj"
+            dotnet pack "$proj" --configuration Release --no-build --output ./nupkgs /p:Version=${{ steps.get_version.outputs.version }}
+          done
+
+      # 7️ Publish .nupkg packages
+      - name: Publish NuGet packages
+        run: dotnet nuget push "./nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      # 8️ Publish .snupkg symbol packages
+      - name: Publish symbol packages
+        run: dotnet nuget push "./nupkgs/*.snupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --symbol-source https://api.nuget.org/v3/index.json --skip-duplicate

@@ -6,6 +6,12 @@ using Monivus.HealthChecks.Hangfire;
 
 namespace Monivus.HealthChecks
 {
+    /// <summary>
+    /// Provides extension methods for registering Hangfire-based health checks with the health checks system.
+    /// </summary>
+    /// <remarks>This class contains methods to integrate Hangfire monitoring with the health checks
+    /// infrastructure. It allows the registration of a health check that monitors the status of Hangfire's <see
+    /// cref="JobStorage"/>  and its associated monitoring API.</remarks>
     public static class HangfireHealthCheckExtensions
     {
         /// <summary>

@@ -5,6 +5,9 @@ using Monivus.HealthChecks.System;
 
 namespace Monivus.HealthChecks
 {
+    /// <summary>
+    /// Provides extension methods for registering System health checks with the health checks system.
+    /// </summary>
     public static class SystemHealthCheckExtensions
     {
         /// <summary>

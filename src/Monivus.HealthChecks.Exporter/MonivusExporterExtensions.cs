@@ -4,6 +4,13 @@ using Monivus.HealthChecks.Exporter;
 
 namespace Monivus.HealthChecks
 {
+    /// <summary>
+    /// Provides extension methods for configuring and registering Monivus exporter services in an application.
+    /// </summary>
+    /// <remarks>This class includes methods to simplify the setup of Monivus exporter services, such as
+    /// binding configuration options and registering required runtime services. It is intended to be used during
+    /// application startup to integrate Monivus exporter functionality into the dependency injection
+    /// container.</remarks>
     public static class MonivusExporterExtensions
     {
         /// <summary>

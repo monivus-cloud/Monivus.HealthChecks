@@ -6,6 +6,9 @@ using StackExchange.Redis;
 
 namespace Monivus.HealthChecks
 {
+    /// <summary>
+    /// Provides extension methods for registering Redis-based health checks with the health checks system.
+    /// </summary>
     public static class RedisHealthCheckExtensions
     {
         /// <summary>

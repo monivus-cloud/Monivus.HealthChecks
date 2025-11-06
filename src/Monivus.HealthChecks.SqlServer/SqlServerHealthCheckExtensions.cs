@@ -6,6 +6,9 @@ using Monivus.HealthChecks.SqlServer;
 
 namespace Monivus.HealthChecks
 {
+    /// <summary>
+    /// Provides extension methods for registering SQL Server health checks with the health checks system.
+    /// </summary>
     public static class SqlServerHealthCheckExtensions
     {
         /// <summary>

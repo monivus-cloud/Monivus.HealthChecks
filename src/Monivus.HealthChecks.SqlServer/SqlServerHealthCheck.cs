@@ -4,17 +4,31 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Monivus.HealthChecks.SqlServer
 {
+    /// <summary>
+    /// Provides a health check for monitoring the status of a SQL Server database.
+    /// </summary>
     public class SqlServerHealthCheck : IHealthCheck
     {
         private readonly SqlServerHealthCheckOptions _options;
         private readonly string _connectionString;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlServerHealthCheck"/> class.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="connectionString"></param>
         public SqlServerHealthCheck(SqlServerHealthCheckOptions options, string connectionString)
         {
             _options = options;
             _connectionString = connectionString;
         }
 
+        /// <summary>
+        /// Performs a health check on the SQL Server database.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context,
             CancellationToken cancellationToken = default)

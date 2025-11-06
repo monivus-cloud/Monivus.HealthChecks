@@ -3,15 +3,28 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Monivus.HealthChecks.System
 {
+    /// <summary>
+    /// Provides a health check that monitors system resource utilization 
+    /// </summary>
     public sealed class SystemHealthCheck : IHealthCheck
     {
         private readonly SystemHealthCheckOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemHealthCheck"/> class.
+        /// </summary>
+        /// <param name="options"></param>
         public SystemHealthCheck(SystemHealthCheckOptions options)
         {
             _options = options;
         }
 
+        /// <summary>
+        /// Performs a health check on system resource utilization.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context,
             CancellationToken cancellationToken = default)

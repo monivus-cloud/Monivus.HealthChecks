@@ -4,11 +4,23 @@ using StackExchange.Redis;
 
 namespace Monivus.HealthChecks.Redis
 {
+    /// <summary>
+    /// Performs a health check for a Redis connection, evaluating its connectivity, responsiveness, and key metrics.
+    /// </summary>
+    /// <remarks>This health check verifies the connection state of the Redis server, performs a ping to
+    /// measure responsiveness,  and collects various metrics such as memory usage, connected clients, and uptime. If
+    /// the connection is slow or  unhealthy, the health check result will reflect the degraded or unhealthy state,
+    /// respectively.</remarks>
     public class RedisHealthCheck : IHealthCheck
     {
         private readonly IConnectionMultiplexer _redisConnection;
         private readonly RedisHealthCheckOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RedisHealthCheck"/> class.
+        /// </summary>
+        /// <param name="redisConnection">The Redis connection multiplexer used to interact with the Redis server. Cannot be <see langword="null"/>.</param>
+        /// <param name="options">The configuration options for the health check. May be <see langword="null"/> to use default settings.</param>
         public RedisHealthCheck(IConnectionMultiplexer redisConnection, RedisHealthCheckOptions options)
         {
             ArgumentNullException.ThrowIfNull(redisConnection);
@@ -17,6 +29,12 @@ namespace Monivus.HealthChecks.Redis
             _options = options;
         }
 
+        /// <summary>
+        /// Performs a health check on the Redis connection.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context,
             CancellationToken cancellationToken = default)

@@ -9,6 +9,9 @@ using System.Text.Json.Serialization;
 
 namespace Monivus.HealthChecks
 {
+    /// <summary>
+    /// Provides extension methods to register Monivus health-check endpoints in an ASP.NET Core application.
+    /// </summary>
     public static class MonivusHealthCheckExtensions
     {
         private static readonly JsonSerializerOptions JsonOptions = new()

@@ -10,6 +10,12 @@ using Microsoft.Extensions.Options;
 
 namespace Monivus.HealthChecks.Exporter
 {
+    /// <summary>
+    /// Background service that periodically exports health check data to a central Monivus Cloud endpoint.
+    /// </summary>
+    /// <param name="httpClientFactory"></param>
+    /// <param name="logger"></param>
+    /// <param name="optionsMonitor"></param>
     public class MonivusExporterBackgroundService(
         IHttpClientFactory httpClientFactory,
         ILogger<MonivusExporterBackgroundService> logger,
@@ -33,6 +39,11 @@ namespace Monivus.HealthChecks.Exporter
             public UnauthorizedThresholdExceededException(string message) : base(message) { }
         }
 
+        /// <summary>
+        /// Main execution loop of the background service.
+        /// </summary>
+        /// <param name="stoppingToken"></param>
+        /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Monivus health exporter started.");

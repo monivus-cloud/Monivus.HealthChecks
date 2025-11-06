@@ -3,17 +3,31 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Monivus.HealthChecks.Url
 {
+    /// <summary>
+    /// Provides a health check for monitoring the availability and responsiveness of a specified URL.
+    /// </summary>
     public sealed class UrlHealthCheck : IHealthCheck
     {
         private readonly UrlHealthCheckOptions _options;
         private readonly string _url;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UrlHealthCheck"/> class.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="options"></param>
         public UrlHealthCheck(string url, UrlHealthCheckOptions options)
         {
             _options = options;
             _url = url;
         }
 
+        /// <summary>
+        /// Performs a health check on the specified URL.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context,
             CancellationToken cancellationToken = default)

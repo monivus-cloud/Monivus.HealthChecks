@@ -1,0 +1,48 @@
+site_name: Monivus.HealthChecks
+site_url: https://www.monivus.com
+repo_url: https://github.com/monivus-cloud/Monivus.HealthChecks
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/git-alt
+  features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - content.tooltips
+    - navigation.footer
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - search.share
+    - search.suggest
+markdown_extensions:
+    - def_list
+    - admonition
+    - pymdownx.highlight:
+        anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+    - attr_list
+    - pymdownx.tabbed:
+        alternate_style: true
+    - attr_list
+    - md_in_html
+    - pymdownx.emoji:
+        emoji_index: !!python/name:material.extensions.emoji.twemoji
+        emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - toc:
+        permalink: true
+nav:
+  - Home: index.md
+  - Health Checks:
+      - Hangfire: health-checks/hangfire.md
+      - Redis: health-checks/redis.md
+      - System: health-checks/system.md
+      - SQL Server: health-checks/sqlserver.md
+      - URL: health-checks/url.md
+  - Exporter: exporter.md

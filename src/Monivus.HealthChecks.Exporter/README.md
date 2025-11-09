@@ -32,7 +32,7 @@ Exports by periodically fetching your app's health endpoint and posting to Moniv
     "Exporter": {
       "Enabled": true,
       "ApplicationHealthCheckUrl": "https://localhost:5001/health",
-      "MonivusCloudUrl": "https://cloud.monivus.example/api/health",
+      "MonivusCloudUrl": "https://cloud.monivus.example/api",
       "ApiKey": "<optional>",
       "CheckInterval": 1,
       "HttpTimeout": "00:00:30"

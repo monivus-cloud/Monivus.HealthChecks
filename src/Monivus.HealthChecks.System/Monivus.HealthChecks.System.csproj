@@ -14,6 +14,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/monivus-cloud/Monivus.HealthChecks</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>monivus-icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
@@ -29,7 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\\..\\README.md" Pack="true" PackagePath="\\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\\..\\monivus-icon.png" Pack="true" PackagePath="\\" />
   </ItemGroup>
 
 </Project>

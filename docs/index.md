@@ -22,7 +22,14 @@ var app = builder.Build();
 // Expose default JSON endpoint at /health
 app.UseMonivusHealthChecks("/health");
 
-// Optionally expose an aggregated endpoint that merges local + remote services
+app.Run();
+```
+
+## Aggregated Checks
+
+Optionally expose an aggregated endpoint that merges local + remote services
+```csharp
+// instead of UseMonivusHealthChecks
 app.UseMonivusAggregatedHealthChecks(options =>
 {
     options.AddEndpoint("https://service-a.example.com/health", name: "service-a");
@@ -30,6 +37,17 @@ app.UseMonivusAggregatedHealthChecks(options =>
 }, path: "/healthz");
 
 app.Run();
+```
+
+``` mermaid
+graph LR
+  A[Application] --> E1[Redis];
+  A --> E2[URL];
+  A --> SA[Service A]
+  A --> SB[Service B]
+  SA --> E3[Sql Server]
+  SA --> E4[Hangfire]
+  SB --> E5[Postgres]
 ```
 
 ## Configuration Hints

@@ -7,6 +7,7 @@ icon: material/menu-right
 Validates that an HTTP/HTTPS endpoint responds as expected.
 
 Status rules:
+
 - Healthy when the response status code is in the expected set (defaults to 2xx) and, if configured, the response time does not exceed the slow threshold.
 - Degraded when the response status code is expected but the response time exceeds `SlowResponseThreshold`.
 - Unhealthy when the response status code is not in the expected set, the request times out, or an exception occurs.

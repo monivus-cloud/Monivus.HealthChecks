@@ -19,6 +19,8 @@ theme:
     - search.suggest
 markdown_extensions:
     - def_list
+    - pymdownx.tasklist:
+        custom_checkbox: true
     - admonition
     - pymdownx.highlight:
         anchor_linenums: true
@@ -42,7 +44,7 @@ nav:
   - Health Checks:
       - Hangfire: health-checks/hangfire.md
       - Redis: health-checks/redis.md
-      - System: health-checks/system.md
       - SQL Server: health-checks/sqlserver.md
+      - System: health-checks/system.md
       - URL: health-checks/url.md
   - Exporter: exporter.md

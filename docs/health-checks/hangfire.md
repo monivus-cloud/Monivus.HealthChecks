@@ -7,6 +7,7 @@ icon: material/menu-right
 Monitors Hangfire server health and queue conditions via the Hangfire monitoring API.
 
 Status rules:
+
 - Healthy when storage is accessible and all configured thresholds are satisfied.
 - Degraded when any threshold is violated:
   - `Failed` jobs > `MaxFailedJobs`

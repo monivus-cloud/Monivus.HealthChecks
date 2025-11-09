@@ -36,6 +36,7 @@ Gets or sets the Redis connection string.
 Threshold in milliseconds for considering a Redis PING as slow.
 
 Status rules:
+
 - Healthy when the PING completes and (if set) the latency is less than or equal to the threshold.
 - Degraded when the measured PING latency is greater than the threshold.
 - Unhealthy when the connection is not established, there are no endpoints, or exceptions occur.
@@ -73,7 +74,5 @@ Example interpretation: if a `PING` takes above 200 ms, the check reports Degrad
   "exception": null,
   "tags": ["Redis"],
   "entryType": "Redis"
-}
-```
 }
 ```

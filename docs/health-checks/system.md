@@ -7,6 +7,7 @@ icon: material/menu-right
 Monitors basic process/system health. Useful for a lightweight, always-on check.
 
 Status rules:
+
 - Healthy when utilization is within configured thresholds.
 - Degraded when a configured threshold is exceeded.
 - This check does not return Unhealthy by itself; only operational errors would do so.
@@ -32,6 +33,7 @@ App settings section: `Monivus:System`
 Percentage of total available memory used by the current process that triggers a degraded state.
 
 Behavior:
+
 - Healthy when `MemoryUsageThresholdPercent` is not set, or the current usage is below the threshold.
 - Degraded when current usage is greater than or equal to the threshold.
 

@@ -1,14 +1,12 @@
----
-icon: material/menu-right
----
 
 # Monivus Exporter
 
 Exports your app's health check report to a central endpoint on a schedule.
 
 What it does:
+
 - Periodically GETs your local health endpoint (JSON).
-- POSTs the same JSON to your Monivus Cloud URL.
+- POSTs the same JSON to your Monivus Cloud URL (or any you have).
 - Uses a lightweight hosted background service with configurable interval and timeout.
 
 ## Usage

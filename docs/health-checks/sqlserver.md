@@ -7,6 +7,7 @@ icon: material/menu-right
 Executes a lightweight SQL command to verify connectivity and responsiveness.
 
 Status rules:
+
 - Healthy when the connection can be opened and the test command returns a non-null scalar result.
 - Unhealthy when connection open, command execution, or the test result fails.
 - This check does not report Degraded; consider using external SLAs or logs for latency thresholds.

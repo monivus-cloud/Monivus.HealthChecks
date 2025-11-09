@@ -132,7 +132,8 @@ Example response from an aggregated endpoint (e.g., `/healthz`) that merges loca
 }
 ```
 
-Conventions:
+## Conventions
+
 - Property names are camelCase; `status` values are strings (e.g., "Healthy").
 - `duration` is an ISO-like TimeSpan string; `durationMs` is numeric and rounded.
 - `entries` are keyed by registration name; aggregated remotes prefix entries with `{remoteName}|` and include a summary entry per remote.

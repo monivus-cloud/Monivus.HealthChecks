@@ -24,7 +24,13 @@ var app = builder.Build();
 // Expose default JSON endpoint at /health
 app.UseMonivusHealthChecks("/health");
 
-// Optionally expose an aggregated endpoint that merges local + remote services
+app.Run();
+```
+## Aggregated Checks
+
+Optionally expose an aggregated endpoint that merges local + remote services
+```csharp
+// instead of UseMonivusHealthChecks
 app.UseMonivusAggregatedHealthChecks(options =>
 {
     options.AddEndpoint("https://service-a.example.com/health", name: "service-a");
@@ -33,6 +39,9 @@ app.UseMonivusAggregatedHealthChecks(options =>
 
 app.Run();
 ```
+
+<img width="756" height="447" alt="image" src="https://github.com/user-attachments/assets/70006845-47e4-4bab-8a89-0a1d0a30407a" />
+
 
 ## Configuration Hints
 

@@ -514,13 +514,13 @@
   
   
     <li class="md-nav__item">
-      <a href="../system/" class="md-nav__link">
+      <a href="../sqlserver/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
-    System
+    SQL Server
   </span>
   
 
@@ -537,13 +537,13 @@
   
   
     <li class="md-nav__item">
-      <a href="../sqlserver/" class="md-nav__link">
+      <a href="../system/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
-    SQL Server
+    System
   </span>
   
 
@@ -592,8 +592,6 @@
     <li class="md-nav__item">
       <a href="../../exporter/" class="md-nav__link">
         
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
     Exporter
@@ -711,13 +709,15 @@
 
 <h1 id="hangfire-health-check">Hangfire Health Check<a class="headerlink" href="#hangfire-health-check" title="Permanent link">&para;</a></h1>
 <p>Monitors Hangfire server health and queue conditions via the Hangfire monitoring API.</p>
-<p>Status rules:
-- Healthy when storage is accessible and all configured thresholds are satisfied.
-- Degraded when any threshold is violated:
-  - <code>Failed</code> jobs &gt; <code>MaxFailedJobs</code>
-  - <code>Enqueued</code> jobs &gt; <code>MaxEnqueuedJobs</code>
-  - Registered servers &lt; <code>MinServers</code>
-- Unhealthy when storage/connection is inaccessible or an exception occurs.</p>
+<p>Status rules:</p>
+<ul>
+<li>Healthy when storage is accessible and all configured thresholds are satisfied.</li>
+<li>Degraded when any threshold is violated:</li>
+<li><code>Failed</code> jobs &gt; <code>MaxFailedJobs</code></li>
+<li><code>Enqueued</code> jobs &gt; <code>MaxEnqueuedJobs</code></li>
+<li>Registered servers &lt; <code>MinServers</code></li>
+<li>Unhealthy when storage/connection is inaccessible or an exception occurs.</li>
+</ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="language-csharp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddHealthChecks</span><span class="p">()</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="p">.</span><span class="n">AddHangfireEntry</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hangfire&quot;</span><span class="p">);</span>

@@ -405,13 +405,13 @@
   
   
     <li class="md-nav__item">
-      <a href="../health-checks/system/" class="md-nav__link">
+      <a href="../health-checks/sqlserver/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
-    System
+    SQL Server
   </span>
   
 
@@ -428,13 +428,13 @@
   
   
     <li class="md-nav__item">
-      <a href="../health-checks/sqlserver/" class="md-nav__link">
+      <a href="../health-checks/system/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
-    SQL Server
+    System
   </span>
   
 
@@ -493,8 +493,6 @@
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
-  
   <span class="md-ellipsis">
     Exporter
   </span>
@@ -505,8 +503,6 @@
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
     Exporter
@@ -674,10 +670,12 @@
 
 <h1 id="monivus-exporter">Monivus Exporter<a class="headerlink" href="#monivus-exporter" title="Permanent link">&para;</a></h1>
 <p>Exports your app's health check report to a central endpoint on a schedule.</p>
-<p>What it does:
-- Periodically GETs your local health endpoint (JSON).
-- POSTs the same JSON to your Monivus Cloud URL.
-- Uses a lightweight hosted background service with configurable interval and timeout.</p>
+<p>What it does:</p>
+<ul>
+<li>Periodically GETs your local health endpoint (JSON).</li>
+<li>POSTs the same JSON to your Monivus Cloud URL (or any you have).</li>
+<li>Uses a lightweight hosted background service with configurable interval and timeout.</li>
+</ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="language-csharp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">var</span><span class="w"> </span><span class="n">builder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WebApplication</span><span class="p">.</span><span class="n">CreateBuilder</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
@@ -752,9 +750,6 @@
 
 
 
-
-  
-  
 
 
 

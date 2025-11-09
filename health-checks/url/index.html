@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://www.monivus.com/health-checks/url/">
       
       
-        <link rel="prev" href="../sqlserver/">
+        <link rel="prev" href="../system/">
       
       
         <link rel="next" href="../../exporter/">
@@ -412,13 +412,13 @@
   
   
     <li class="md-nav__item">
-      <a href="../system/" class="md-nav__link">
+      <a href="../sqlserver/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
-    System
+    SQL Server
   </span>
   
 
@@ -435,13 +435,13 @@
   
   
     <li class="md-nav__item">
-      <a href="../sqlserver/" class="md-nav__link">
+      <a href="../system/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
-    SQL Server
+    System
   </span>
   
 
@@ -611,8 +611,6 @@
       <a href="../../exporter/" class="md-nav__link">
         
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
-  
   <span class="md-ellipsis">
     Exporter
   </span>
@@ -747,10 +745,12 @@
 
 <h1 id="url-health-check">URL Health Check<a class="headerlink" href="#url-health-check" title="Permanent link">&para;</a></h1>
 <p>Validates that an HTTP/HTTPS endpoint responds as expected.</p>
-<p>Status rules:
-- Healthy when the response status code is in the expected set (defaults to 2xx) and, if configured, the response time does not exceed the slow threshold.
-- Degraded when the response status code is expected but the response time exceeds <code>SlowResponseThreshold</code>.
-- Unhealthy when the response status code is not in the expected set, the request times out, or an exception occurs.</p>
+<p>Status rules:</p>
+<ul>
+<li>Healthy when the response status code is in the expected set (defaults to 2xx) and, if configured, the response time does not exceed the slow threshold.</li>
+<li>Degraded when the response status code is expected but the response time exceeds <code>SlowResponseThreshold</code>.</li>
+<li>Unhealthy when the response status code is not in the expected set, the request times out, or an exception occurs.</li>
+</ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="language-csharp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddHealthChecks</span><span class="p">()</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="p">.</span><span class="n">AddUrlEntry</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Google&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://www.google.com&quot;</span><span class="p">);</span>
@@ -849,7 +849,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../sqlserver/" class="md-footer__link md-footer__link--prev" aria-label="Previous: SQL Server">
+          <a href="../system/" class="md-footer__link md-footer__link--prev" aria-label="Previous: System">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -859,7 +859,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                SQL Server
+                System
               </div>
             </div>
           </a>

@@ -11,10 +11,10 @@
         <link rel="canonical" href="https://www.monivus.com/health-checks/sqlserver/">
       
       
-        <link rel="prev" href="../system/">
+        <link rel="prev" href="../redis/">
       
       
-        <link rel="next" href="../url/">
+        <link rel="next" href="../system/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -409,29 +409,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../system/" class="md-nav__link">
-        
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
-  
-  <span class="md-ellipsis">
-    System
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -560,6 +537,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../system/" class="md-nav__link">
+        
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
+  
+  <span class="md-ellipsis">
+    System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../url/" class="md-nav__link">
         
   
@@ -592,8 +592,6 @@
     <li class="md-nav__item">
       <a href="../../exporter/" class="md-nav__link">
         
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
     Exporter
@@ -711,10 +709,12 @@
 
 <h1 id="sql-server-health-check">SQL Server Health Check<a class="headerlink" href="#sql-server-health-check" title="Permanent link">&para;</a></h1>
 <p>Executes a lightweight SQL command to verify connectivity and responsiveness.</p>
-<p>Status rules:
-- Healthy when the connection can be opened and the test command returns a non-null scalar result.
-- Unhealthy when connection open, command execution, or the test result fails.
-- This check does not report Degraded; consider using external SLAs or logs for latency thresholds.</p>
+<p>Status rules:</p>
+<ul>
+<li>Healthy when the connection can be opened and the test command returns a non-null scalar result.</li>
+<li>Unhealthy when connection open, command execution, or the test result fails.</li>
+<li>This check does not report Degraded; consider using external SLAs or logs for latency thresholds.</li>
+</ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="language-csharp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddHealthChecks</span><span class="p">()</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="p">.</span><span class="n">AddSqlServerEntry</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SqlServer&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tags</span><span class="p">:</span><span class="w"> </span><span class="k">new</span><span class="p">[]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;db&quot;</span><span class="w"> </span><span class="p">});</span>
@@ -792,7 +792,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../system/" class="md-footer__link md-footer__link--prev" aria-label="Previous: System">
+          <a href="../redis/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Redis">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -802,20 +802,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                System
+                Redis
               </div>
             </div>
           </a>
         
         
           
-          <a href="../url/" class="md-footer__link md-footer__link--next" aria-label="Next: URL">
+          <a href="../system/" class="md-footer__link md-footer__link--next" aria-label="Next: System">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                URL
+                System
               </div>
             </div>
             <div class="md-footer__button md-icon">

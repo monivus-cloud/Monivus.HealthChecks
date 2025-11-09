@@ -359,6 +359,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conventions
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -472,13 +481,13 @@
   
   
     <li class="md-nav__item">
-      <a href="health-checks/system/" class="md-nav__link">
+      <a href="health-checks/sqlserver/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
-    System
+    SQL Server
   </span>
   
 
@@ -495,13 +504,13 @@
   
   
     <li class="md-nav__item">
-      <a href="health-checks/sqlserver/" class="md-nav__link">
+      <a href="health-checks/system/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
-    SQL Server
+    System
   </span>
   
 
@@ -550,8 +559,6 @@
     <li class="md-nav__item">
       <a href="exporter/" class="md-nav__link">
         
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
     Exporter
@@ -611,6 +618,15 @@
   <a href="#response-examples" class="md-nav__link">
     <span class="md-ellipsis">
       Response Examples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conventions
     </span>
   </a>
   
@@ -751,10 +767,12 @@
 </span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>Conventions:
-- Property names are camelCase; <code>status</code> values are strings (e.g., "Healthy").
-- <code>duration</code> is an ISO-like TimeSpan string; <code>durationMs</code> is numeric and rounded.
-- <code>entries</code> are keyed by registration name; aggregated remotes prefix entries with <code>{remoteName}|</code> and include a summary entry per remote.</p>
+<h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Property names are camelCase; <code>status</code> values are strings (e.g., "Healthy").</li>
+<li><code>duration</code> is an ISO-like TimeSpan string; <code>durationMs</code> is numeric and rounded.</li>
+<li><code>entries</code> are keyed by registration name; aggregated remotes prefix entries with <code>{remoteName}|</code> and include a summary entry per remote.</li>
+</ul>
 
 
 

@@ -11,10 +11,10 @@
         <link rel="canonical" href="https://www.monivus.com/health-checks/system/">
       
       
-        <link rel="prev" href="../redis/">
+        <link rel="prev" href="../sqlserver/">
       
       
-        <link rel="next" href="../sqlserver/">
+        <link rel="next" href="../url/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -409,6 +409,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../sqlserver/" class="md-nav__link">
+        
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
+  
+  <span class="md-ellipsis">
+    SQL Server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -519,29 +542,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../sqlserver/" class="md-nav__link">
-        
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
-  
-  <span class="md-ellipsis">
-    SQL Server
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../url/" class="md-nav__link">
         
   
@@ -574,8 +574,6 @@
     <li class="md-nav__item">
       <a href="../../exporter/" class="md-nav__link">
         
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5z"/></svg>
   
   <span class="md-ellipsis">
     Exporter
@@ -675,10 +673,12 @@
 
 <h1 id="system-health-check">System Health Check<a class="headerlink" href="#system-health-check" title="Permanent link">&para;</a></h1>
 <p>Monitors basic process/system health. Useful for a lightweight, always-on check.</p>
-<p>Status rules:
-- Healthy when utilization is within configured thresholds.
-- Degraded when a configured threshold is exceeded.
-- This check does not return Unhealthy by itself; only operational errors would do so.</p>
+<p>Status rules:</p>
+<ul>
+<li>Healthy when utilization is within configured thresholds.</li>
+<li>Degraded when a configured threshold is exceeded.</li>
+<li>This check does not return Unhealthy by itself; only operational errors would do so.</li>
+</ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <div class="language-csharp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddHealthChecks</span><span class="p">()</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="p">.</span><span class="n">AddSystemEntry</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;System&quot;</span><span class="p">);</span>
@@ -690,9 +690,11 @@
 <p>App settings section: <code>Monivus:System</code></p>
 <h3 id="memoryusagethresholdpercent">MemoryUsageThresholdPercent<a class="headerlink" href="#memoryusagethresholdpercent" title="Permanent link">&para;</a></h3>
 <p>Percentage of total available memory used by the current process that triggers a degraded state.</p>
-<p>Behavior:
-- Healthy when <code>MemoryUsageThresholdPercent</code> is not set, or the current usage is below the threshold.
-- Degraded when current usage is greater than or equal to the threshold.</p>
+<p>Behavior:</p>
+<ul>
+<li>Healthy when <code>MemoryUsageThresholdPercent</code> is not set, or the current usage is below the threshold.</li>
+<li>Degraded when current usage is greater than or equal to the threshold.</li>
+</ul>
 <p>Notes:
 - The percentage is computed using GC memory load versus total available memory and clamped to 0–100.</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
@@ -755,7 +757,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../redis/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Redis">
+          <a href="../sqlserver/" class="md-footer__link md-footer__link--prev" aria-label="Previous: SQL Server">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -765,20 +767,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Redis
+                SQL Server
               </div>
             </div>
           </a>
         
         
           
-          <a href="../sqlserver/" class="md-footer__link md-footer__link--next" aria-label="Next: SQL Server">
+          <a href="../url/" class="md-footer__link md-footer__link--next" aria-label="Next: URL">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                SQL Server
+                URL
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -1,38 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <PackageId>Monivus.HealthChecks.SqlServer</PackageId>
-    <Version>0.1.0</Version>
-    <Authors>Emrah KONDUR</Authors>
-    <Company>Monivus</Company>
-    <Description>SQL Server connectivity health checks using Microsoft.Data.SqlClient for Monivus.</Description>
-    <PackageTags>monivus;healthchecks;aspnetcore;monitoring;observability;sqlserver;database</PackageTags>
-    <RepositoryUrl>https://github.com/monivus-cloud/Monivus.HealthChecks</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/monivus-cloud/Monivus.HealthChecks</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>monivus-icon.png</PackageIcon>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NeutralLanguage>en</NeutralLanguage>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageId>Monivus.HealthChecks.SqlServer</PackageId>
+		<Version>0.1.0</Version>
+		<Authors>Emrah KONDUR</Authors>
+		<Company>Monivus</Company>
+		<Description>SQL Server connectivity health checks using Microsoft.Data.SqlClient for Monivus.</Description>
+		<PackageTags>monivus;healthchecks;aspnetcore;monitoring;observability;sqlserver;database</PackageTags>
+		<RepositoryUrl>https://github.com/monivus-cloud/Monivus.HealthChecks</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/monivus-cloud/Monivus.HealthChecks</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>monivus-icon.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NeutralLanguage>en</NeutralLanguage>
+	</PropertyGroup>
 
-  <ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.19" />
-	  <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="8.0.19" />
-	  <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.10" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.19" />
+		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="8.0.19" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="..\\..\\monivus-icon.png" Pack="true" PackagePath="\\" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+		<None Include="monivus-icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 </Project>

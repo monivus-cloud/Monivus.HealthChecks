@@ -15,9 +15,17 @@ Status rules:
   - Registered servers < `MinServers`
 - Unhealthy when storage/connection is inaccessible or an exception occurs.
 
+## Install
+
+```bash
+dotnet add package Monivus.HealthChecks.Hangfire
+```
+
 ## Usage
 
 ```csharp
+using Monivus.HealthChecks;
+
 builder.Services.AddHealthChecks()
     .AddHangfireEntry(name: "Hangfire");
 ```

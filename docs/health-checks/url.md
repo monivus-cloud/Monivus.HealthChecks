@@ -12,9 +12,17 @@ Status rules:
 - Degraded when the response status code is expected but the response time exceeds `SlowResponseThreshold`.
 - Unhealthy when the response status code is not in the expected set, the request times out, or an exception occurs.
 
+## Install
+
+```bash
+dotnet add package Monivus.HealthChecks.Url
+```
+
 ## Usage
 
 ```csharp
+using Monivus.HealthChecks;
+
 builder.Services.AddHealthChecks()
     .AddUrlEntry(name: "Google", url: "https://www.google.com");
 ```

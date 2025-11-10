@@ -9,9 +9,17 @@ What it does:
 - POSTs the same JSON to your Monivus Cloud URL (or any you have).
 - Uses a lightweight hosted background service with configurable interval and timeout.
 
+## Install
+
+```bash
+dotnet add package Monivus.HealthChecks.Exporter
+```
+
 ## Usage
 
 ```csharp
+using Monivus.HealthChecks;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Register exporter (binds Monivus:Exporter)
@@ -89,4 +97,3 @@ Short example (truncated):
 - Invalid URLs: both URLs must be absolute; misconfigurations are logged and the cycle is skipped.
 - Timeouts: adjust `HttpTimeout` if your health check or network is slow.
 - Service Unavailable (503): considered a valid health read; payload still forwarded.
-

@@ -6,9 +6,17 @@ icon: material/menu-right
 
 Pings Redis and evaluates responsiveness. Also collects useful metrics (clients, memory, ops/sec, etc.).
 
+## Install
+
+```bash
+dotnet add package Monivus.HealthChecks.Redis
+```
+
 ## Usage
 
 ```csharp
+using Monivus.HealthChecks;
+
 builder.Services.AddHealthChecks()
     .AddRedisEntry(name: "Redis");
 ```

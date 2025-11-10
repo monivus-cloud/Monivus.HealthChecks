@@ -12,9 +12,17 @@ Status rules:
 - Degraded when a configured threshold is exceeded.
 - This check does not return Unhealthy by itself; only operational errors would do so.
 
+## Install
+
+```bash
+dotnet add package Monivus.HealthChecks.System
+```
+
 ## Usage
 
 ```csharp
+using Monivus.HealthChecks;
+
 builder.Services.AddHealthChecks()
     .AddSystemEntry(name: "System");
 ```

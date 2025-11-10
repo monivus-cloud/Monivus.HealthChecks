@@ -12,9 +12,17 @@ Status rules:
 - Unhealthy when connection open, command execution, or the test result fails.
 - This check does not report Degraded; consider using external SLAs or logs for latency thresholds.
 
+## Install
+
+```bash
+dotnet add package Monivus.HealthChecks.SqlServer
+```
+
 ## Usage
 
 ```csharp
+using Monivus.HealthChecks;
+
 builder.Services.AddHealthChecks()
     .AddSqlServerEntry(name: "SqlServer", tags: new[] { "db" });
 ```

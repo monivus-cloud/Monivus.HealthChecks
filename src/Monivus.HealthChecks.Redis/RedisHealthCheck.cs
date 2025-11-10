@@ -66,14 +66,20 @@ namespace Monivus.HealthChecks.Redis
                 var server = _redisConnection.GetServer(endpoint);
 
                 var pingResponse = await database.PingAsync().ConfigureAwait(false);
-                var serverInfoSections = await server.InfoAsync().ConfigureAwait(false);
-                var infoValues = FlattenInfo(serverInfoSections);
                 var databaseSize = await server.DatabaseSizeAsync().ConfigureAwait(false);
                 var lastSave = await server.LastSaveAsync().ConfigureAwait(false);
 
-                var healthData = BuildHealthData(server, infoValues, pingResponse.TotalMilliseconds, databaseSize, lastSave);
+                var healthData = new Dictionary<string, object>
+                {
+                    ["IsConnected"] = server.IsConnected,
+                    ["ServerVersion"] = server.Version.ToString(),
+                    ["ServerType"] = server.ServerType.ToString(),
+                    ["PingMilliseconds"] = Math.Round(pingResponse.TotalMicroseconds, 2),
+                    ["DatabaseSize"] = databaseSize,
+                    ["LastSaveUtc"] = lastSave.ToUniversalTime().ToString("o", CultureInfo.InvariantCulture)
+                };
 
-                if (_options.SlowPingThresholdMilliseconds.HasValue 
+                if (_options.SlowPingThresholdMilliseconds.HasValue
                     && pingResponse.TotalMilliseconds > _options.SlowPingThresholdMilliseconds.Value)
                 {
                     return HealthCheckResult.Degraded(
@@ -81,8 +87,23 @@ namespace Monivus.HealthChecks.Redis
                         data: healthData);
                 }
 
+                var allowAdmin = false;
+
+                try
+                {
+                    var serverInfoSections = await server.InfoAsync().ConfigureAwait(false);
+                    var infoValues = FlattenInfo(serverInfoSections);
+
+                    BuildInfoData(infoValues, healthData);
+                    allowAdmin = true;
+                }
+                catch 
+                {
+                    // Ignore info retrieval errors, admin mode may be disabled
+                }
+
                 return HealthCheckResult.Healthy(
-                    "Redis is healthy and responsive.",
+                    allowAdmin ? "Redis is healthy and responsive." : "Redis is healthy and responsive. (Admin not allowed!)",
                     healthData);
             }
             catch (Exception ex)
@@ -99,25 +120,10 @@ namespace Monivus.HealthChecks.Redis
             }
         }
 
-        private static Dictionary<string, object> BuildHealthData(
-            IServer server,
+        private static void BuildInfoData(
             IReadOnlyDictionary<string, string> infoValues,
-            double pingMilliseconds,
-            long databaseSize,
-            DateTime? lastSave)
+            Dictionary<string, object> healthData)
         {
-            var healthData = new Dictionary<string, object>
-            {
-                ["IsConnected"] = server.IsConnected,
-                ["ServerVersion"] = server.Version.ToString(),
-                ["ServerType"] = server.ServerType.ToString(),
-                ["PingMilliseconds"] = System.Math.Round(pingMilliseconds, 2),
-                ["DatabaseSize"] = databaseSize,
-                ["LastSaveUtc"] = lastSave.HasValue
-                    ? lastSave.Value.ToUniversalTime().ToString("o", CultureInfo.InvariantCulture)
-                    : null!
-            };
-
             var usedMemoryBytes = TryGetInfoInt64(infoValues, "used_memory");
             var usedMemoryRssBytes = TryGetInfoInt64(infoValues, "used_memory_rss");
             var systemMemoryBytes = TryGetInfoInt64(infoValues, "total_system_memory");
@@ -183,8 +189,6 @@ namespace Monivus.HealthChecks.Redis
                     (keyspaceHits ?? 0) / (double)totalKeyspaceOperations * 100,
                     2);
             }
-
-            return healthData;
         }
 
         private static IReadOnlyDictionary<string, string> FlattenInfo(IEnumerable<IEnumerable<KeyValuePair<string, string>>> sections)

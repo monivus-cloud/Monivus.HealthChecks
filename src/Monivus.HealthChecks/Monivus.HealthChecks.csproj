@@ -25,7 +25,7 @@
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
-		<None Include="monivus-icon.png" Pack="true" PackagePath="\" />
+		<None Include="..\..\monivus-icon.png" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 
 	<ItemGroup>

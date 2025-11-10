@@ -42,7 +42,8 @@ app.UseHttpsRedirection();
 app.UseMonivusAggregatedHealthChecks(opts =>
 {
     // Example: add API health endpoint
-    opts.AddEndpoint("https://localhost:7048/health", "api");
+    opts.AddEndpoint("https://localhost:7048/health", "Service A");
+    opts.AddEndpoint("https://localhost:7201/health", "Service B");
     // You can add more:
     // opts.AddEndpoint("jobs", "https://localhost:5002/health");
 });

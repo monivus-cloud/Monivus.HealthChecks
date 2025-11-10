@@ -3,6 +3,8 @@ site_url: https://www.monivus.com
 repo_url: https://github.com/monivus-cloud/Monivus.HealthChecks
 theme:
   name: material
+  logo: monivus-icon.png
+  favicon: monivus-icon.png
   language: en
   icon:
     repo: fontawesome/brands/git-alt
@@ -56,8 +58,9 @@ nav:
   - Home: index.md
   - Health Checks:
       - Hangfire: health-checks/hangfire.md
+      - PostgreSQL: health-checks/postgresql.md
       - Redis: health-checks/redis.md
-      - SQL Server: health-checks/sqlserver.md
+      - SQL Server: health-checks/sqlserver.md  
       - System: health-checks/system.md
       - URL: health-checks/url.md
   - Exporter: exporter.md

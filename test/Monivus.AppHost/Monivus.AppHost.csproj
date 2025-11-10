@@ -12,11 +12,13 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.1" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.5.2" />
     <PackageReference Include="Aspire.Hosting.Redis" Version="9.5.1" />
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.5.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Monivus.Api2\Monivus.Api2.csproj" />
     <ProjectReference Include="..\Monivus.Api\Monivus.Api.csproj" />
     <ProjectReference Include="..\Monivus.ServiceDefaults\Monivus.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Monivus.UI\Monivus.UI.csproj" />

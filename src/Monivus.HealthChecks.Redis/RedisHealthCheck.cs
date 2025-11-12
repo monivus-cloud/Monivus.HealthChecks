@@ -74,7 +74,7 @@ namespace Monivus.HealthChecks.Redis
                     ["IsConnected"] = server.IsConnected,
                     ["ServerVersion"] = server.Version.ToString(),
                     ["ServerType"] = server.ServerType.ToString(),
-                    ["PingMilliseconds"] = Math.Round(pingResponse.TotalMicroseconds, 2),
+                    ["PingMilliseconds"] = Math.Round(pingResponse.TotalMilliseconds, 2),
                     ["DatabaseSize"] = databaseSize,
                     ["LastSaveUtc"] = lastSave.ToUniversalTime().ToString("o", CultureInfo.InvariantCulture)
                 };

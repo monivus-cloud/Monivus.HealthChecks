@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monivus.HealthChecks.Postgr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monivus.Api2", "test\Monivus.Api2\Monivus.Api2.csproj", "{98F235DE-2512-85F1-34FD-A2BF3AB85A67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monivus.HealthChecks.Oracle", "src\Monivus.HealthChecks.Oracle\Monivus.HealthChecks.Oracle.csproj", "{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -199,6 +201,18 @@ Global
 		{98F235DE-2512-85F1-34FD-A2BF3AB85A67}.Release|x64.Build.0 = Release|Any CPU
 		{98F235DE-2512-85F1-34FD-A2BF3AB85A67}.Release|x86.ActiveCfg = Release|Any CPU
 		{98F235DE-2512-85F1-34FD-A2BF3AB85A67}.Release|x86.Build.0 = Release|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Debug|x64.Build.0 = Debug|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Debug|x86.Build.0 = Debug|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Release|x64.ActiveCfg = Release|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Release|x64.Build.0 = Release|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -217,6 +231,7 @@ Global
 		{006E2A09-647F-B223-AE22-C294E6CFACE3} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{A8E6C7F1-2D4B-4E6F-8A5C-9F8D1E2A3B4C} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{98F235DE-2512-85F1-34FD-A2BF3AB85A67} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
+		{7F088796-DDF7-4562-9AC6-8E8E2C717DF3} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E091C59C-F147-4654-A9BD-750BDC53D2C9}

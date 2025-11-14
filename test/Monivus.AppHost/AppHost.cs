@@ -24,6 +24,11 @@ var postgres = builder
 
 var postgresDb = postgres.AddDatabase("postgresDb");
 
+//var oracle = builder.AddOracle("oracle")
+//                    .WithLifetime(ContainerLifetime.Persistent);
+
+//var oracledb = oracle.AddDatabase("oracledb");
+
 var api2 = builder.AddProject<Projects.Monivus_Api2>("api2")
     .WithReference(postgresDb)
     .WaitFor(postgresDb);

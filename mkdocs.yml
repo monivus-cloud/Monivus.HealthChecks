@@ -58,6 +58,7 @@ nav:
   - Home: index.md
   - Health Checks:
       - Hangfire: health-checks/hangfire.md
+      - Oracle: health-checks/oracle.md
       - PostgreSQL: health-checks/postgresql.md
       - Redis: health-checks/redis.md
       - SQL Server: health-checks/sqlserver.md  

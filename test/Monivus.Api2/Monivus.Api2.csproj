@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Monivus.HealthChecks.Oracle\Monivus.HealthChecks.Oracle.csproj" />
     <ProjectReference Include="..\..\src\Monivus.HealthChecks.PostgreSql\Monivus.HealthChecks.PostgreSql.csproj" />
     <ProjectReference Include="..\..\src\Monivus.HealthChecks\Monivus.HealthChecks.csproj" />
     <ProjectReference Include="..\Monivus.ServiceDefaults\Monivus.ServiceDefaults.csproj" />

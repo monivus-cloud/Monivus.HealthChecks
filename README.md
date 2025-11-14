@@ -42,6 +42,10 @@ app.Run();
 
 <img width="756" height="447" alt="image" src="https://github.com/user-attachments/assets/70006845-47e4-4bab-8a89-0a1d0a30407a" />
 
+## Documentation
+
+Full API details and advanced scenarios live at https://monivus-cloud.github.io/Monivus.HealthChecks/.
+
 
 ## Configuration Hints
 
@@ -148,3 +152,21 @@ Example response from an aggregated endpoint (e.g., `/healthz`) that merges loca
 - Property names are camelCase; `status` values are strings (e.g., "Healthy").
 - `duration` is an ISO-like TimeSpan string; `durationMs` is numeric and rounded.
 - `entries` are keyed by registration name; aggregated remotes prefix entries with `{remoteName}|` and include a summary entry per remote.
+
+## Available Health Checks
+
+| Check | Entry Method | Description | NuGet |
+| --- | --- | --- | --- |
+| Hangfire | `AddHangfireEntry()` | Inspects Hangfire servers, failed jobs, and queue depth to catch background job issues early. | [![Monivus.HealthChecks.Hangfire NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.Hangfire.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.Hangfire/) |
+| Oracle | `AddOracleEntry()` | Executes a lightweight query to confirm Oracle database connectivity and health. | [![Monivus.HealthChecks.Oracle NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.Oracle.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.Oracle/) |
+| PostgreSql | `AddPostgreSqlEntry()` | Validates PostgreSQL connectivity using the configured connection string. | [![Monivus.HealthChecks.PostgreSql NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.PostgreSql.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.PostgreSql/) |
+| Redis | `AddRedisEntry()` | Executes a Redis ping to ensure the cache node is reachable and responsive. | [![Monivus.HealthChecks.Redis NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.Redis.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.Redis/) |
+| SqlServer | `AddSqlServerEntry()` | Runs a lightweight ping/query to verify SQL Server connectivity. | [![Monivus.HealthChecks.SqlServer NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.SqlServer.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.SqlServer/) |
+| System | `AddSystemEntry()` | Validates CPU, memory, and other host-level metrics stay under configured thresholds. | [![Monivus.HealthChecks.System NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.System.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.System/) |
+| Url | `AddUrlEntry()` | Calls arbitrary HTTP/S endpoints and tracks latency or failures. | [![Monivus.HealthChecks.Url NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.Url.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.Url/) |
+
+## NuGet
+
+[![NuGet Version](https://img.shields.io/nuget/v/Monivus.HealthChecks.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks/)
+
+Install via the NuGet Gallery: https://www.nuget.org/packages?q=Monivus.HealthChecks

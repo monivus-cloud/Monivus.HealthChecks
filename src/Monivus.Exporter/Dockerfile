@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY src/Monivus.HealthChecks/Monivus.HealthChecks.csproj src/Monivus.HealthChecks/
@@ -13,7 +13,7 @@ COPY . .
 
 RUN dotnet publish src/Monivus.Exporter/Monivus.Exporter.csproj -c Release -o /app/publish /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/runtime:9.0 AS final
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS final
 WORKDIR /app
 
 COPY --from=build /app/publish .

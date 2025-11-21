@@ -86,7 +86,7 @@ sudo systemctl start monivus-exporter
 
 Pull published image:
 ```bash
-docker pull ghcr.io/monivus-cloud/monivus.healthchecks/monivus-exporter:0.1.0
+docker pull ghcr.io/monivus-cloud/monivus.healthchecks/monivus-exporter:latest
 ```
 
 Build locally (if you need a custom image):
@@ -100,7 +100,7 @@ docker run --rm \
   -e Monivus__Exporter__ApplicationHealthCheckUrl=https://my-app/health \
   -e Monivus__Exporter__MonivusCloudUrl=https://cloud.monivus.com/api \
   -e Monivus__Exporter__ApiKey=... \
-  ghcr.io/monivus-cloud/monivus.healthchecks/monivus-exporter:0.1.0
+  ghcr.io/monivus-cloud/monivus.healthchecks/monivus-exporter:latest
 ```
 
 To push to GHCR:

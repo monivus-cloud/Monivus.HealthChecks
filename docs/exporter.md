@@ -37,7 +37,7 @@ If you prefer not to wire the exporter inside your app, use the standalone host 
 
 - Pull published image:
   ```bash
-  docker pull ghcr.io/monivus-cloud/monivus.healthchecks/monivus-exporter:0.1.0
+  docker pull ghcr.io/monivus-cloud/monivus.healthchecks/monivus-exporter:latest
   ```
 - Run locally: 
 

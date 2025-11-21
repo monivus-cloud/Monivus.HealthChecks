@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/nupkgs/
+**/TestResults/
+**/.vs/
+**/.vscode/
+.github/
+.git/
+.gitignore
+docs/
+site/
+test/

@@ -24,7 +24,7 @@ builder.Services.AddHealthChecks()
     .AddRedisEntry()
     .AddUrlEntry("google");
 
-builder.Services.AddMonivusExporter(builder.Configuration);
+//builder.Services.AddMonivusExporter(builder.Configuration);
 
 var app = builder.Build();
 
@@ -37,6 +37,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseHealthChecks("/healthz");
 
 // Aggregate remote health endpoints into UI health output
 app.UseMonivusAggregatedHealthChecks(opts =>

@@ -31,6 +31,19 @@ app.UseMonivusHealthChecks("/health");
 app.Run();
 ```
 
+## Standalone host (service/container)
+
+If you prefer not to wire the exporter inside your app, use the standalone host in `src/Monivus.Exporter`:
+
+- Run locally: `dotnet run --project src/Monivus.Exporter`
+- Windows service: publish then install `MonivusExporter` pointing to the published `Monivus.Exporter.exe`
+- systemd: run `/usr/bin/dotnet /opt/monivus-exporter/Monivus.Exporter.dll`
+- Docker: `docker build -f src/Monivus.Exporter/Dockerfile -t ghcr.io/<owner>/monivus-exporter:local .`
+- ENV overrides in containers/services:
+  - `Monivus__Exporter__ApplicationHealthCheckUrl`
+  - `Monivus__Exporter__MonivusCloudUrl` (e.g., `https://cloud.monivus.com/api`)
+  - `Monivus__Exporter__ApiKey`
+
 ## Configuration
 
 Binding path: `Monivus:Exporter`

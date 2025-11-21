@@ -2,12 +2,10 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder
     .AddRedis("cache")
-    .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent);
 
 var sqlServer = builder
     .AddSqlServer("sqlserver")
-    .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent);
 
 var sampleDb = sqlServer.AddDatabase("sampleDb");
@@ -19,7 +17,6 @@ var api = builder.AddProject<Projects.Monivus_Api>("api")
 var postgres = builder
     .AddPostgres("postgres")
     .WithHostPort(1111)
-    .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent);
 
 var postgresDb = postgres.AddDatabase("postgresDb");

@@ -41,6 +41,10 @@ jobs:
         run: |
           mkdir -p ./nupkgs
           for proj in $(find src -name '*.csproj'); do
+            if grep -Eiq "<IsPackable>[[:space:]]*false" "$proj"; then
+              echo "Skipping $proj (IsPackable=false)"
+              continue
+            fi
             echo "Packing $proj"
             dotnet pack "$proj" --configuration Release --no-build --output ./nupkgs /p:Version=${{ steps.get_version.outputs.version }}
           done

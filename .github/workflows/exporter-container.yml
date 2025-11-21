@@ -55,5 +55,5 @@ jobs:
           file: src/Monivus.Exporter/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/monivus-exporter:${{ steps.vars.outputs.tag }}
-            ghcr.io/${{ github.repository }}/monivus-exporter:latest
+            ghcr.io/monivus-cloud/monivus.healthchecks/monivus-exporter:tag
+            ghcr.io/monivus-cloud/monivus.healthchecks/monivus-exporter:0.1.0

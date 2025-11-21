@@ -2,10 +2,14 @@
 
 # Monivus.HealthChecks
 
-Lightweight health checks for ASP.NET Core with a clean JSON response and optional remote aggregation.
+Lightweight, developer-friendly health checks for ASP.NET Core.  
+Provides **rich JSON responses**, **deep diagnostics**, and **optional remote aggregation** for Monivus Cloud or your own dashboards.
 
 What you’ll find here:
-- Quick start and examples below
+- Quick start
+- Default vs Monivus endpoints comparison
+
+---
 
 ## Quick Start
 
@@ -21,11 +25,99 @@ builder.Services.AddHealthChecks()
 
 var app = builder.Build();
 
-// Expose default JSON endpoint at /health
+// Rich, structured JSON output (metrics, durations, exception details, tags)
 app.UseMonivusHealthChecks("/health");
 
 app.Run();
 ```
+
+---
+
+## Default ASP.NET HealthChecks vs Monivus HealthChecks
+
+ASP.NET Core ships with the built-in middleware:
+
+```csharp
+app.UseHealthChecks("/healthz");
+```
+
+### Built-in HealthChecks Output (Microsoft)
+
+- Does **not** return JSON.
+- Response body is **plain text only** → `"Healthy"`, `"Degraded"`, `"Unhealthy"`.
+- No entry-level details.
+- No durations.
+- No metrics.
+- No structured schema.
+- Not suitable for dashboards or aggregators.
+
+Example output:
+
+```
+Healthy
+```
+
+---
+
+## Monivus HealthChecks Output
+
+When using:
+
+```csharp
+app.UseMonivusHealthChecks("/health");
+```
+
+You get a **structured, detailed JSON response**:
+
+- Per-entry status (SQL, Redis, URL, Hangfire, custom checks)
+- Duration per check (ms)
+- Error messages + stack traces
+- System metrics (CPU, memory, etc.)
+- Tags & metadata for Monivus Cloud aggregation
+- Dashboard-friendly uniform schema
+
+Example output:
+
+```json
+{
+  "status": "Unhealthy",
+  "duration": "142ms",
+  "entries": {
+    "SqlServer": {
+      "status": "Unhealthy",
+      "duration": "120ms",
+      "error": "Timeout expired"
+    },
+    "Redis": {
+      "status": "Healthy",
+      "duration": "8ms"
+    },
+    "System": {
+      "status": "Healthy",
+      "cpu": 12,
+      "memoryUsed": 2147483648
+    }
+  }
+}
+```
+
+---
+
+## Summary
+
+| Feature | `UseHealthChecks` | `UseMonivusHealthChecks` |
+|--------|-------------------|---------------------------|
+| JSON response | ✖ (plain text only) | ✔ |
+| Overall status | ✔ | ✔ |
+| Per-entry breakdown | ✖ | ✔ |
+| Durations | ✖ | ✔ |
+| Exception details | ✖ | ✔ |
+| Additional metrics | ✖ | ✔ |
+| Aggregation for Monivus Cloud | ✖ | ✔ |
+| Developer debug friendliness | Low | High |
+
+---
+
 ## Aggregated Checks
 
 Optionally expose an aggregated endpoint that merges local + remote services
@@ -41,6 +133,27 @@ app.Run();
 ```
 
 <img width="756" height="447" alt="image" src="https://github.com/user-attachments/assets/70006845-47e4-4bab-8a89-0a1d0a30407a" />
+
+Example response from an aggregated endpoint (e.g., `/healthz`) that merges local checks plus two remotes:
+
+```json
+{
+  "status": "Healthy",
+  "timestamp": "2024-11-07T21:36:12.101Z",
+  "duration": "00:00:00.0450000",
+  "durationMs": 45,
+  "traceId": "0HMG4H6P9A2Q2:00000002",
+  "entries": {
+    "System": { "status": "Healthy", "description": "System utilization within defined thresholds.", "duration": "00:00:00.0010000", "durationMs": 1, "data": null, "exception": null, "tags": ["System"], "entryType": "System" },
+
+    "service-a": { "status": "Healthy", "description": null, "duration": "00:00:00.0200000", "durationMs": 20, "data": { "statusCode": 200 }, "exception": null, "tags": [], "entryType": "Service" },
+    "service-a|System": { "status": "Healthy", "description": "System utilization within defined thresholds.", "duration": "00:00:00.0010000", "durationMs": 1, "data": null, "exception": null, "tags": ["System"], "entryType": "System" },
+    "service-a|SqlServer": { "status": "Healthy", "description": "SqlServer is healthy and running.", "duration": "00:00:00.0100000", "durationMs": 10, "data": { "connectionOpenMilliseconds": 3.1, "queryDurationMilliseconds": 1.2 }, "exception": null, "tags": ["SqlServer"], "entryType": "SqlServer" },
+
+    "service-b": { "status": "Unhealthy", "description": "Request timed out.", "duration": "00:00:00.5000000", "durationMs": 500, "data": { "statusCode": 504 }, "exception": "System.Threading.Tasks.TaskCanceledException", "tags": [], "entryType": "Service" }
+  }
+}
+```
 
 ## Documentation
 
@@ -74,75 +187,6 @@ You can configure most options via `appsettings.json`:
       "MaxFailedJobs": 10,
       "MaxEnqueuedJobs": 1000
     }
-  }
-}
-```
-
-## Response Examples
-
-Example response from a local `/health` endpoint:
-
-```json
-{
-  "status": "Healthy",
-  "timestamp": "2024-11-07T21:35:42.512Z",
-  "duration": "00:00:00.0230000",
-  "durationMs": 23,
-  "traceId": "0HMG4H6P9A2Q1:00000001",
-  "entries": {
-    "SqlServer": {
-      "status": "Healthy",
-      "description": "SqlServer is healthy and running.",
-      "duration": "00:00:00.0100000",
-      "durationMs": 10,
-      "data": {
-        "connectionTimeout": 15,
-        "state": 1,
-        "commandTimeout": 30,
-        "connectionOpenMilliseconds": 3.21,
-        "queryDurationMilliseconds": 1.45
-      },
-      "exception": null,
-      "tags": ["SqlServer", "db"],
-      "entryType": "SqlServer"
-    },
-    "Redis": {
-      "status": "Degraded",
-      "description": "Redis ping exceeded threshold (210ms).",
-      "duration": "00:00:00.0040000",
-      "durationMs": 4,
-      "data": {
-        "isConnected": true,
-        "serverVersion": "7.2.4",
-        "serverType": "Standalone",
-        "pingMilliseconds": 210,
-        "databaseSize": 1024
-      },
-      "exception": null,
-      "tags": ["Redis"],
-      "entryType": "Redis"
-    },
-  }
-}
-```
-
-Example response from an aggregated endpoint (e.g., `/healthz`) that merges local checks plus two remotes:
-
-```json
-{
-  "status": "Healthy",
-  "timestamp": "2024-11-07T21:36:12.101Z",
-  "duration": "00:00:00.0450000",
-  "durationMs": 45,
-  "traceId": "0HMG4H6P9A2Q2:00000002",
-  "entries": {
-    "System": { "status": "Healthy", "description": "System utilization within defined thresholds.", "duration": "00:00:00.0010000", "durationMs": 1, "data": null, "exception": null, "tags": ["System"], "entryType": "System" },
-
-    "service-a": { "status": "Healthy", "description": null, "duration": "00:00:00.0200000", "durationMs": 20, "data": { "statusCode": 200 }, "exception": null, "tags": [], "entryType": "Service" },
-    "service-a|System": { "status": "Healthy", "description": "System utilization within defined thresholds.", "duration": "00:00:00.0010000", "durationMs": 1, "data": null, "exception": null, "tags": ["System"], "entryType": "System" },
-    "service-a|SqlServer": { "status": "Healthy", "description": "SqlServer is healthy and running.", "duration": "00:00:00.0100000", "durationMs": 10, "data": { "connectionOpenMilliseconds": 3.1, "queryDurationMilliseconds": 1.2 }, "exception": null, "tags": ["SqlServer"], "entryType": "SqlServer" },
-
-    "service-b": { "status": "Unhealthy", "description": "Request timed out.", "duration": "00:00:00.5000000", "durationMs": 500, "data": { "statusCode": 504 }, "exception": "System.Threading.Tasks.TaskCanceledException", "tags": [], "entryType": "Service" }
   }
 }
 ```

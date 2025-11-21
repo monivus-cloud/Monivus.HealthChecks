@@ -671,6 +671,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#standalone-host-servicecontainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standalone host (service/container)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       Configuration
@@ -759,6 +768,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#standalone-host-servicecontainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standalone host (service/container)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       Configuration
@@ -837,6 +855,18 @@
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">app</span><span class="p">.</span><span class="n">UseMonivusHealthChecks</span><span class="p">(</span><span class="s">&quot;/health&quot;</span><span class="p">);</span>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">app</span><span class="p">.</span><span class="n">Run</span><span class="p">();</span>
 </span></code></pre></div>
+<h2 id="standalone-host-servicecontainer">Standalone host (service/container)<a class="headerlink" href="#standalone-host-servicecontainer" title="Permanent link">&para;</a></h2>
+<p>If you prefer not to wire the exporter inside your app, use the standalone host in <code>src/Monivus.Exporter</code>:</p>
+<ul>
+<li>Run locally: <code>dotnet run --project src/Monivus.Exporter</code></li>
+<li>Windows service: publish then install <code>MonivusExporter</code> pointing to the published <code>Monivus.Exporter.exe</code></li>
+<li>systemd: run <code>/usr/bin/dotnet /opt/monivus-exporter/Monivus.Exporter.dll</code></li>
+<li>Docker: <code>docker build -f src/Monivus.Exporter/Dockerfile -t ghcr.io/&lt;owner&gt;/monivus-exporter:local .</code></li>
+<li>ENV overrides in containers/services:</li>
+<li><code>Monivus__Exporter__ApplicationHealthCheckUrl</code></li>
+<li><code>Monivus__Exporter__MonivusCloudUrl</code> (e.g., <code>https://cloud.monivus.com/api</code>)</li>
+<li><code>Monivus__Exporter__ApiKey</code></li>
+</ul>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Binding path: <code>Monivus:Exporter</code></p>
 <p>Keys:</p>

@@ -1,5 +1,4 @@
 site_name: Monivus.HealthChecks
-site_url: https://www.monivus.com
 repo_url: https://github.com/monivus-cloud/Monivus.HealthChecks
 theme:
   name: material

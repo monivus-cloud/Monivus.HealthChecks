@@ -157,8 +157,11 @@ Example response from an aggregated endpoint (e.g., `/healthz`) that merges loca
 
 ## Documentation
 
-Full API details and advanced scenarios live at https://monivus-cloud.github.io/Monivus.HealthChecks/.
+Full API details and advanced scenarios live at https://docs.monivus.com
 
+## Exporter
+
+Prefer to run the exporter as a standalone service or container? See `src/Monivus.Exporter/README.md`; it hosts the same exporter logic and can run as a Windows service, systemd unit, or Docker container pointing at your app's `/health` endpoint.
 
 ## Configuration Hints
 

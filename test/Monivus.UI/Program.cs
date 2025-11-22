@@ -24,7 +24,7 @@ builder.Services.AddHealthChecks()
     .AddRedisEntry()
     .AddUrlEntry("google");
 
-//builder.Services.AddMonivusExporter(builder.Configuration);
+builder.Services.AddMonivusExporter(builder.Configuration);
 
 var app = builder.Build();
 

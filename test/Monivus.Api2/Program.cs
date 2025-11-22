@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.AddServiceDefaults();
 
+//builder.AddMySqlDataSource(connectionName: "mySqlDb");
+
 builder.Services.AddHealthChecks()
+    //.AddMySqlEntry("mysql2")
     .AddPostgreSqlEntry();
 
 var app = builder.Build();

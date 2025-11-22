@@ -19,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Register health checks you need
 builder.Services.AddHealthChecks()
     .AddSystemEntry()
+    .AddMySqlEntry()
     .AddSqlServerEntry()
     .AddRedisEntry()
     .AddUrlEntry("Google");
@@ -170,11 +171,15 @@ You can configure most options via `appsettings.json`:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=.;Database=MyDb;Trusted_Connection=True;"
+    "DefaultConnection": "Server=.;Database=MyDb;Trusted_Connection=True;",
+    "MySql": "Server=localhost;Port=3306;Database=MyDb;Uid=myuser;Pwd=mypassword;"
   },
   "Monivus": {
     "SqlServer": {
       "ConnectionStringOrName": "DefaultConnection"
+    },
+    "MySql": {
+      "ConnectionStringOrName": "MySql"
     },
     "Redis": {
       "ConnectionString": "localhost:6379"
@@ -205,6 +210,7 @@ You can configure most options via `appsettings.json`:
 | Check | Entry Method | Description | NuGet |
 | --- | --- | --- | --- |
 | Hangfire | `AddHangfireEntry()` | Inspects Hangfire servers, failed jobs, and queue depth to catch background job issues early. | [![Monivus.HealthChecks.Hangfire NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.Hangfire.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.Hangfire/) |
+| MySQL | `AddMySqlEntry()` | Executes a lightweight query to confirm MySQL database connectivity and health. | [![Monivus.HealthChecks.MySql NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.MySql.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.MySql/) |
 | Oracle | `AddOracleEntry()` | Executes a lightweight query to confirm Oracle database connectivity and health. | [![Monivus.HealthChecks.Oracle NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.Oracle.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.Oracle/) |
 | PostgreSql | `AddPostgreSqlEntry()` | Validates PostgreSQL connectivity using the configured connection string. | [![Monivus.HealthChecks.PostgreSql NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.PostgreSql.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.PostgreSql/) |
 | Redis | `AddRedisEntry()` | Executes a Redis ping to ensure the cache node is reachable and responsive. | [![Monivus.HealthChecks.Redis NuGet](https://img.shields.io/nuget/v/Monivus.HealthChecks.Redis.svg?logo=nuget)](https://www.nuget.org/packages/Monivus.HealthChecks.Redis/) |

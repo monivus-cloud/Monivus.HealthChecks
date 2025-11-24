@@ -1,4 +1,3 @@
-> # Beta version is live!
 
 # Monivus.HealthChecks
 

@@ -32,6 +32,16 @@ app.UseMonivusHealthChecks("/health");
 app.Run();
 ```
 
+## Sample Aspire project
+
+Want to see the health checks in action? There is a sample directory under `/sample` with an Aspire project you can easily run and test. From the root:
+
+```bash
+dotnet run --project sample/Monivus.AppHost/Monivus.AppHost.csproj
+```
+
+It spins up the sample services and exposes the Monivus health endpoints so you can hit them locally.
+
 ---
 
 ## Default ASP.NET HealthChecks vs Monivus HealthChecks

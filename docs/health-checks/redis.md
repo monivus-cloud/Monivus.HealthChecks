@@ -18,7 +18,7 @@ dotnet add package Monivus.HealthChecks.Redis
 using Monivus.HealthChecks;
 
 builder.Services.AddHealthChecks()
-    .AddRedisEntry(name: "Redis");
+    .AddRedisEntry();
 ```
 
 If not providing a connection string in configuration, ensure an `IConnectionMultiplexer` is registered.

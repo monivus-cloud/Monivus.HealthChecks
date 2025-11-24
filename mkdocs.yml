@@ -57,7 +57,8 @@ nav:
   - Home: index.md
   - Health Checks:
       - Hangfire: health-checks/hangfire.md
-      - MySQL: health-checks/mysql.md
+      - MongoDB: health-checks/mongodb.md
+      - MySQL: health-checks/mysql.md   
       - Oracle: health-checks/oracle.md
       - PostgreSQL: health-checks/postgresql.md
       - Redis: health-checks/redis.md

@@ -27,7 +27,7 @@ dotnet add package Monivus.HealthChecks.Hangfire
 using Monivus.HealthChecks;
 
 builder.Services.AddHealthChecks()
-    .AddHangfireEntry(name: "Hangfire");
+    .AddHangfireEntry();
 ```
 
 Requires Hangfire `JobStorage` to be configured (e.g., SQL Server storage). The check resolves `JobStorage` from DI or uses `JobStorage.Current`.

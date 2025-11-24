@@ -24,7 +24,7 @@ dotnet add package Monivus.HealthChecks.MySql
 using Monivus.HealthChecks;
 
 builder.Services.AddHealthChecks()
-    .AddMySqlEntry(name: "MySql", tags: new[] { "db" });
+    .AddMySqlEntry();
 ```
 
 Configuration binding path: `Monivus:MySql`

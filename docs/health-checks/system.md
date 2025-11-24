@@ -24,7 +24,7 @@ dotnet add package Monivus.HealthChecks.System
 using Monivus.HealthChecks;
 
 builder.Services.AddHealthChecks()
-    .AddSystemEntry(name: "System");
+    .AddSystemEntry();
 ```
 
 Then expose the endpoint:

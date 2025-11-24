@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.5.1" />
+    <PackageReference Include="Aspire.MongoDB.Driver" Version="9.5.2" />
     <PackageReference Include="Hangfire" Version="1.8.21" />
     <PackageReference Include="Hangfire.InMemory" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Monivus.HealthChecks.Hangfire\Monivus.HealthChecks.Hangfire.csproj" />
+    <ProjectReference Include="..\..\src\Monivus.HealthChecks.MongoDb\Monivus.HealthChecks.MongoDb.csproj" />
     <ProjectReference Include="..\..\src\Monivus.HealthChecks.SqlServer\Monivus.HealthChecks.SqlServer.csproj" />
     <ProjectReference Include="..\..\src\Monivus.HealthChecks\Monivus.HealthChecks.csproj" />
     <ProjectReference Include="..\Monivus.ServiceDefaults\Monivus.ServiceDefaults.csproj" />

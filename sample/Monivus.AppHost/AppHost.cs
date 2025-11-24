@@ -1,18 +1,8 @@
+
 var builder = DistributedApplication.CreateBuilder(args);
 
-var cache = builder
-    .AddRedis("cache")
-    .WithLifetime(ContainerLifetime.Persistent);
+var cache = builder.AddRedis("cache");
 
-var sqlServer = builder
-    .AddSqlServer("sqlserver")
-    .WithLifetime(ContainerLifetime.Persistent);
-
-var sampleDb = sqlServer.AddDatabase("sampleDb");
-
-var api = builder.AddProject<Projects.Monivus_Api>("api")
-    .WithReference(sampleDb)
-    .WaitFor(sampleDb);
 
 var postgres = builder
     .AddPostgres("postgres")
@@ -21,15 +11,23 @@ var postgres = builder
 
 var postgresDb = postgres.AddDatabase("postgresDb");
 
-//var oracle = builder.AddOracle("oracle")
-//                    .WithLifetime(ContainerLifetime.Persistent);
+var mongo = builder.AddMongoDB("mongo");
+var mongodb = mongo.AddDatabase("mongodb");
 
+#region Other Test Integrations
+//var oracle = builder.AddOracle("oracle");
 //var oracledb = oracle.AddDatabase("oracledb");
 
-//var mysql = builder.AddMySql("mysql")
-//    .WithLifetime(ContainerLifetime.Persistent);
-
+//var mysql = builder.AddMySql("mysql");
 //var mySqlDb = mysql.AddDatabase("mySqlDb");
+
+//var sqlServer = builder.AddSqlServer("sqlserver");
+//var sampleDb = sqlServer.AddDatabase("sampleDb");
+#endregion
+
+var api = builder.AddProject<Projects.Monivus_Api>("api")
+    .WithReference(mongodb)
+    .WaitFor(mongodb);
 
 var api2 = builder.AddProject<Projects.Monivus_Api2>("api2")
     .WithReference(postgresDb)

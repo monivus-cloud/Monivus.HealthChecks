@@ -24,7 +24,7 @@ dotnet add package Monivus.HealthChecks.Oracle
 using Monivus.HealthChecks;
 
 builder.Services.AddHealthChecks()
-    .AddOracleEntry(name: "Oracle", tags: new[] { "db" });
+    .AddOracleEntry();
 ```
 
 Configuration binding path: `Monivus:Oracle`

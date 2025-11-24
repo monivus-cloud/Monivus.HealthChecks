@@ -24,7 +24,7 @@ dotnet add package Monivus.HealthChecks.SqlServer
 using Monivus.HealthChecks;
 
 builder.Services.AddHealthChecks()
-    .AddSqlServerEntry(name: "SqlServer", tags: new[] { "db" });
+    .AddSqlServerEntry();
 ```
 
 Configuration binding path: `Monivus:SqlServer`

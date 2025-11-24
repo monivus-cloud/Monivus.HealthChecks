@@ -24,7 +24,7 @@ dotnet add package Monivus.HealthChecks.PostgreSql
 using Monivus.HealthChecks;
 
 builder.Services.AddHealthChecks()
-    .AddPostgreSqlEntry(name: "PostgreSql", tags: new[] { "db" });
+    .AddPostgreSqlEntry();
 ```
 
 Configuration binding path: `Monivus:PostgreSql`

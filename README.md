@@ -1,14 +1,10 @@
 
 # Monivus.HealthChecks
 
-Lightweight, developer-friendly health checks for ASP.NET Core.  
+Real-time Health Checks with Deep Insight
+
 Provides **rich JSON responses**, **deep diagnostics**, and **optional remote aggregation** for Monivus Cloud or your own dashboards.
 
-What you’ll find here:
-- Quick start
-- Default vs Monivus endpoints comparison
-
----
 
 ## Quick Start
 

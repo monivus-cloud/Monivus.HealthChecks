@@ -14,10 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Register health checks you need
 builder.Services.AddHealthChecks()
     .AddSystemEntry()
-    .AddMySqlEntry()
     .AddSqlServerEntry()
-    .AddRedisEntry()
-    .AddUrlEntry("Google");
+    .AddRedisEntry();
 
 var app = builder.Build();
 
@@ -86,22 +84,102 @@ Example output:
 
 ```json
 {
-  "status": "Unhealthy",
-  "duration": "142ms",
+  "status": "Degraded",
+  "timestamp": "2025-11-29T09:55:19.7662916Z",
+  "duration": "00:00:00.4225265",
+  "durationMs": 422.526,
+  "traceId": "0HNHF5LGU6R9V:00000017",
   "entries": {
     "SqlServer": {
-      "status": "Unhealthy",
-      "duration": "120ms",
-      "error": "Timeout expired"
+      {
+      "status": "Healthy",
+      "description": "SqlServer is healthy and running.",
+      "duration": "00:00:00.0100000",
+      "durationMs": 10,
+      "data": {
+        "connectionTimeout": 15,
+        "state": 1,
+        "commandTimeout": 30,
+        "connectionOpenMilliseconds": 3.21,
+        "queryDurationMilliseconds": 1.45
+      },
+      "exception": null,
+      "tags": ["SqlServer", "db"],
+      "entryType": "SqlServer"
+    }
     },
     "Redis": {
       "status": "Healthy",
-      "duration": "8ms"
+      "description": "Redis is healthy and responsive.",
+      "duration": "00:00:00.0679099",
+      "durationMs": 67.91,
+      "data": {
+        "IsConnected": true,
+        "ServerVersion": "8.2.1",
+        "ServerType": "Standalone",
+        "PingMilliseconds": 37.53,
+        "DatabaseSize": 0,
+        "LastSaveUtc": "2025-11-29T09:54:56.0000000Z",
+        "UsedMemoryMb": 0.96,
+        "UsedMemoryRssMb": 12.19,
+        "TotalSystemMemoryMb": 15821.16,
+        "MemoryUsagePercent": 0.01,
+        "ConnectedClients": 4,
+        "BlockedClients": 0,
+        "OpsPerSecond": 0,
+        "UptimeSeconds": 23,
+        "MemoryFragmentationRatio": 12.73,
+        "KeyspaceHits": 0,
+        "KeyspaceMisses": 2,
+        "KeyspaceHitRatePercent": 0
+      },
+      "exception": null,
+      "tags": [
+        "Redis"
+      ],
+      "entryType": "Redis"
     },
     "System": {
-      "status": "Healthy",
-      "cpu": 12,
-      "memoryUsed": 2147483648
+      "status": "Degraded",
+      "description": "Process memory usage 90% exceeds 90% threshold.",
+      "duration": "00:00:00.0378217",
+      "durationMs": 37.822,
+      "data": {
+        "ProcessName": "Monivus.UI",
+        "Is64BitProcess": true,
+        "ProcessorCount": 20,
+        "UptimeSeconds": 16.99,
+        "TotalProcessorTimeSeconds": 4.14,
+        "MemoryUsagePercent": 90,
+        "WorkingSetBytes": 199917568,
+        "WorkingSetMegabytes": 190.66,
+        "PrivateMemoryBytes": 78909440,
+        "PagedMemoryBytes": 78909440,
+        "PagedSystemMemoryBytes": 566240,
+        "NonPagedSystemMemoryBytes": 150880,
+        "EnvironmentWorkingSetBytes": 199917568,
+        "HandleCount": 1134,
+        "ThreadCount": 70,
+        "PriorityClass": "Normal",
+        "GcTotalAllocatedBytes": 36926464,
+        "GcHeapSizeBytes": 21246296,
+        "GcFragmentedBytes": 5051848,
+        "GcCommittedBytes": 27648000,
+        "GcMemoryLoadBytes": 30599545651,
+        "GcHighMemoryLoadThresholdBytes": 30599545651,
+        "GcTotalAvailableMemoryBytes": 33999495168,
+        "GcCollectionsGen0": 4,
+        "GcCollectionsGen1": 2,
+        "GcCollectionsGen2": 2,
+        "GcPinnedObjectsCount": 9,
+        "GcGeneration": 0,
+        "GcPauseTimePercentage": 0.14
+      },
+      "exception": null,
+      "tags": [
+        "System"
+      ],
+      "entryType": "System"
     }
   }
 }

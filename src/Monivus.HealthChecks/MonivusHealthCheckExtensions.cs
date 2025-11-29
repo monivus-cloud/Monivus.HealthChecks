@@ -134,6 +134,7 @@ namespace Monivus.HealthChecks
         private static async Task WriteAggregatedResponseAsync(HttpContext context, HealthReport localReport, AggregatedHealthOptions options)
         {
             var mergedEntries = new Dictionary<string, HealthCheckEntry>(StringComparer.OrdinalIgnoreCase);
+            var overallStatus = localReport.Status;
 
             // Gather local entries first
             foreach (var entry in localReport.Entries)
@@ -193,30 +194,32 @@ namespace Monivus.HealthChecks
                         }
                     }
 
+                    var summaryData = new Dictionary<string, object>
+                    {
+                        ["StatusCode"] = res.StatusCode,
+                    };
+
+                    HealthStatus summaryStatus = HealthStatus.Healthy;
+                    string? summaryDescription = null;
+
+                    if (res.Error != null)
+                    {
+                        summaryStatus = HealthStatus.Unhealthy;
+                        summaryDescription = res.Error.Message;
+                    }
+                    else if (res.Report is not null)
+                    {
+                        summaryStatus = res.Report.Status;
+                    }
+                    else if (res.StatusCode != 0)
+                    {
+                        summaryStatus = res.StatusCode is >= 200 and < 300 ? HealthStatus.Healthy : HealthStatus.Unhealthy;
+                    }
+
+                    overallStatus = CombineStatus(overallStatus, summaryStatus);
+
                     if (options.IncludeRemoteSummaryEntry)
                     {
-                        var summaryData = new Dictionary<string, object>
-                        {
-                            ["StatusCode"] = res.StatusCode,
-                        };
-
-                        HealthStatus summaryStatus = HealthStatus.Healthy;
-                        string? summaryDescription = null;
-
-                        if (res.Error != null)
-                        {
-                            summaryStatus = HealthStatus.Unhealthy;
-                            summaryDescription = res.Error.Message;
-                        }
-                        else if (res.Report is not null)
-                        {
-                            summaryStatus = res.Report.Status;
-                        }
-                        else if (res.StatusCode != 0)
-                        {
-                            summaryStatus = res.StatusCode is >= 200 and < 300 ? HealthStatus.Healthy : HealthStatus.Unhealthy;
-                        }
-
                         var summaryKey = prefix;
                         var finalKey = summaryKey;
                         var i2 = 1;
@@ -241,7 +244,7 @@ namespace Monivus.HealthChecks
 
             var response = new HealthCheckReport
             {
-                Status = localReport.Status,
+                Status = overallStatus,
                 Timestamp = DateTime.UtcNow,
                 Duration = localReport.TotalDuration,
                 TraceId = context.TraceIdentifier,
@@ -292,6 +295,21 @@ namespace Monivus.HealthChecks
             }
 
             return new RemoteFetchResult(report, status, duration, error);
+        }
+
+        private static HealthStatus CombineStatus(HealthStatus current, HealthStatus candidate)
+        {
+            if (current == HealthStatus.Unhealthy || candidate == HealthStatus.Unhealthy)
+            {
+                return HealthStatus.Unhealthy;
+            }
+
+            if (current == HealthStatus.Degraded || candidate == HealthStatus.Degraded)
+            {
+                return HealthStatus.Degraded;
+            }
+
+            return HealthStatus.Healthy;
         }
 
         private static string InferEntryType(IEnumerable<string>? tags)

@@ -35,9 +35,9 @@ namespace Monivus.HealthChecks.Exporter
         public int CheckInterval { get; set; } = 1;
 
         /// <summary>
-        /// Gets or sets the HTTP request timeout for calls to the health check endpoint and Monivus cloud.
-        /// Defaults to 30 seconds.
+        /// Gets or sets the HTTP request timeout for calls to the health check endpoint.
+        /// Defaults to 5 seconds.
         /// </summary>
-        public TimeSpan HttpTimeout { get; set; } = TimeSpan.FromSeconds(30);
+        public TimeSpan HttpTimeout { get; set; } = TimeSpan.FromSeconds(5);
     }
 }

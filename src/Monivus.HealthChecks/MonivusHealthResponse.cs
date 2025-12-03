@@ -29,6 +29,11 @@ namespace Monivus.HealthChecks
         public double DurationMs => Math.Round(Duration.TotalMilliseconds, 3);
 
         /// <summary>
+        /// Optional exception message or serialized exception information if the overall health check process encountered an error.
+        /// </summary>
+        public string? Exception { get; set; }
+
+        /// <summary>
         /// Optional trace identifier associated with this health check execution.
         /// </summary>
         public string TraceId { get; set; } = string.Empty;

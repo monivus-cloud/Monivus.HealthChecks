@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Monivus.HealthChecks.Exporter
 {
@@ -118,10 +119,22 @@ namespace Monivus.HealthChecks.Exporter
             {
                 using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, stoppingToken);
 
-                if (!response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.ServiceUnavailable)
+                if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogWarning("Health endpoint {Endpoint} returned {StatusCode}", endpoint, (int)response.StatusCode);
-                    return null;
+                    var msg = response.StatusCode == HttpStatusCode.Unauthorized
+                        ? "Unauthorized access to health endpoint. Check API key configuration."
+                        : "Non-success status code received from health endpoint.";
+
+                    _logger.LogWarning(msg);
+
+                    return new HealthCheckReport
+                    {
+                        Duration = TimeSpan.Zero,
+                        Status = HealthStatus.Unhealthy,
+                        Timestamp = DateTime.UtcNow,
+                        Exception = msg,
+                        TraceId = Guid.NewGuid().ToString(),
+                    };
                 }
 
                 await using var stream = await response.Content.ReadAsStreamAsync(stoppingToken);
@@ -130,7 +143,17 @@ namespace Monivus.HealthChecks.Exporter
                     var report = await JsonSerializer.DeserializeAsync<HealthCheckReport>(stream, SerializerOptions, stoppingToken);
                     if (report == null)
                     {
-                        _logger.LogWarning("Health endpoint {Endpoint} returned an empty payload.", endpoint);
+                        var msg = "Deserialized health report is null.";
+                        _logger.LogWarning(msg);
+
+                        return new HealthCheckReport
+                        {
+                            Duration = TimeSpan.Zero,
+                            Status = HealthStatus.Unhealthy,
+                            Timestamp = DateTime.UtcNow,
+                            Exception = msg,
+                            TraceId = Guid.NewGuid().ToString(),
+                        };
                     }
                     else
                     {
@@ -141,21 +164,37 @@ namespace Monivus.HealthChecks.Exporter
                 }
                 catch (JsonException ex)
                 {
-                    _logger.LogError(ex, "Invalid JSON payload received from {Endpoint}", endpoint);
-                    return null;
+                    var msg = "Invalid JSON payload received.";
+                    _logger.LogError(ex, msg);
+                    return new HealthCheckReport
+                    {
+                        Duration = TimeSpan.Zero,
+                        Status = HealthStatus.Unhealthy,
+                        Timestamp = DateTime.UtcNow,
+                        Exception = msg,
+                        TraceId = Guid.NewGuid().ToString(),
+                    };
                 }
             }
             catch (HttpRequestException ex)
             {
-                _logger.LogError(ex, "Could not reach health endpoint {Endpoint}", endpoint);
-                return null;
+                var msg = "HTTP request to health endpoint failed.";
+                _logger.LogError(ex, msg);
+                return new HealthCheckReport
+                {
+                    Duration = TimeSpan.Zero,
+                    Status = HealthStatus.Unhealthy,
+                    Timestamp = DateTime.UtcNow,
+                    Exception = msg,
+                    TraceId = Guid.NewGuid().ToString(),
+                };
             }
         }
 
         private async Task SendReportAsync(Uri destination, HealthCheckReport report, MonivusExporterOptions options, CancellationToken stoppingToken)
         {
             using var client = _httpClientFactory.CreateClient($"{nameof(MonivusExporterBackgroundService)}-central");
-            client.Timeout = options.HttpTimeout;
+            client.Timeout = TimeSpan.FromSeconds(10);
 
             using var request = new HttpRequestMessage(HttpMethod.Post, destination);
 

@@ -247,10 +247,6 @@ Full API details and advanced scenarios live at https://docs.monivus.com
 
 Prefer to run the exporter as a standalone service or container? [See](src/Monivus.Exporter/README.md); it hosts the same exporter logic and can run as a Windows service, systemd unit, or Docker container pointing at your app's `/health` endpoint.
 
-Visit [www.monivus.com](https://www.monivus.com/) to see how the exporter feeds Monivus Cloud dashboards and alerting.
-
-<img width="1897" height="671" alt="dashboard" src="https://github.com/user-attachments/assets/39ab30d1-a5af-4cb6-a417-2a6f515c704f" />
-
 ## Configuration Hints
 
 You can configure most options via `appsettings.json`:
